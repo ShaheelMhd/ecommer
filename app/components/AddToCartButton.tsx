@@ -6,9 +6,10 @@ import { toast } from "sonner";
 // productId from ProductCard -- already made a prisma call there
 interface Props {
   productId: string;
+  className?: string;
 }
 
-const AddToCartButton = ({ productId }: Props) => {
+const AddToCartButton = ({ productId, className }: Props) => {
   const handleAddToCart = async () => {
     try {
       const response = await fetch("/api/cart", {
@@ -31,7 +32,7 @@ const AddToCartButton = ({ productId }: Props) => {
   };
 
   return (
-    <Button variant="secondary" onClick={handleAddToCart}>
+    <Button className={className} variant="secondary" onClick={handleAddToCart}>
       Add to Cart
     </Button>
   );
