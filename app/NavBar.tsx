@@ -46,10 +46,10 @@ const NavBar = async () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-60" align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
+              <DropdownMenuSeparator className="w-[80%] justify-self-center" />
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Preferences</DropdownMenuItem>
-              <DropdownMenuSeparator />
+              <DropdownMenuSeparator className="w-[80%] justify-self-center" />
               <DropdownMenuItem>
                 <Link href="/api/auth/signout" className="w-full">
                   Sign Out

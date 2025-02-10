@@ -32,10 +32,10 @@ export default function RootLayout({
       >
         {showNavbar ? <NavBar /> : null}
         <AuthProvider>
-          <main>
-            <div className={contentPadding}>{children}</div>
-            <Toaster className="mr-2" duration={2000} />
+          <main className={contentPadding}>
+            {children}
           </main>
+          <Toaster className="mr-2" duration={2000} />
         </AuthProvider>
       </body>
     </html>

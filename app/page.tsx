@@ -4,7 +4,6 @@ import ProductCard from "./components/ProductCard";
 export default function Home() {
   return (
     <div>
-      <main>
         <h1>Smartphones</h1>
         <div className="grid grid-cols-4 gap-5 mb-10">
           <ProductCard id="b6fcfbbc-9790-4feb-b9e4-fe81908de682" />
@@ -19,7 +18,6 @@ export default function Home() {
           <LongProductCard id="733f9dd6-ca90-4363-b441-f157c9685beb" />
           <LongProductCard id="895925ae-a8f4-428d-b0c0-e1e1c34317bf" />
         </div>
-      </main>
     </div>
   );
 }

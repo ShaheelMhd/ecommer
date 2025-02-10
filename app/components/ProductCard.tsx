@@ -15,11 +15,9 @@ interface Props {
   id: string;
   width?: number;
   height?: number;
-  className?: string;
-  link?: string;
 }
 
-const ProductCard = async ({ id, width, height, className, link }: Props) => {
+const ProductCard = async ({ id, width, height }: Props) => {
   const product = await prisma.product.findUnique({
     where: {
       id: id,
@@ -40,14 +38,10 @@ const ProductCard = async ({ id, width, height, className, link }: Props) => {
   return (
     <Card className="flex flex-col">
       <CardHeader>
-        <Link href={link ? link : `/product/${product.id}`}>
-          <CardTitle>
-            {product.name.length > 40
-              ? product.name.substring(0, 40) + "..."
-              : product.name}
-          </CardTitle>
+        <Link href={`/products/${id}`}>
+          <CardTitle className="line-clamp-2">{product.name}</CardTitle>
         </Link>
-        <h2 className="text-stone-500">${product.price.toLocaleString()}</h2>
+        <h3 className="text-stone-500">${product.price.toLocaleString()}</h3>
       </CardHeader>
       <CardContent className="flex-shrink-0 my-auto">
         <Image
@@ -59,7 +53,7 @@ const ProductCard = async ({ id, width, height, className, link }: Props) => {
         />
       </CardContent>
       <CardFooter className="grid grid-cols-2 gap-3 align-bottom">
-        <AddToCartButton productId={product.id}/>
+        <AddToCartButton productId={product.id} />
         <Button variant="default">Buy now</Button>
       </CardFooter>
     </Card>

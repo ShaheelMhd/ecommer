@@ -16,17 +16,9 @@ interface ProductInfo {
   id: string;
   width?: number;
   height?: number;
-  className?: string;
-  link?: string;
 }
 
-const LongProductCard = async ({
-  id,
-  width,
-  height,
-  className,
-  link,
-}: ProductInfo) => {
+const LongProductCard = async ({ id, width, height }: ProductInfo) => {
   const product = await prisma.product.findUnique({
     where: {
       id: id,
@@ -45,7 +37,7 @@ const LongProductCard = async ({
   if (image.length === 0) return null;
 
   return (
-    <Card className="">
+    <Card>
       <div className="flex h-full">
         <CardContent className="pt-6 flex-shrink-0 my-auto">
           <Image
@@ -58,19 +50,13 @@ const LongProductCard = async ({
         </CardContent>
         <div className="flex flex-col justify-between">
           <CardHeader className="pl-0">
-            <Link href={link ? link : "#"}>
-              <CardTitle>
-                {product.name.length > 50
-                  ? product.name.substring(0, 50) + "..."
-                  : product.name}
-              </CardTitle>
+            <Link href={`/products/${id}`}>
+              <CardTitle className="line-clamp-2">{product.name}</CardTitle>
             </Link>
-            <CardDescription>
-              {product.description.length > 95
-                ? product.description.substring(0, 95) + "..."
-                : product.description}
+            <CardDescription className="line-clamp-2">
+              {product.description}
             </CardDescription>
-            <h2>${product.price.toLocaleString()}</h2>
+            <h3 className="text-stone-700">${product.price.toLocaleString()}</h3>
           </CardHeader>
           <CardFooter className="grid grid-cols-2 gap-3 pl-0">
             <AddToCartButton productId={product.id} />
