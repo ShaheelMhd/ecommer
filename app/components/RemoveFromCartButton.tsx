@@ -23,11 +23,7 @@ const RemoveFromCartButton = ({ productId }: Props) => {
         throw new Error("Failed to remove from cart");
       }
 
-      toast.success("Removed from cart!", {
-        onAutoClose: () => {
-          window.location.reload();
-        },
-      });
+      toast.success("Removed from cart!");
     } catch (error) {
       console.error("Error removing from cart:", error);
       toast.error("An error occurred. Please try again later.");
