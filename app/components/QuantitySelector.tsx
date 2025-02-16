@@ -1,13 +1,13 @@
 "use client";
 
 import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -36,9 +36,10 @@ interface Props {
     };
     quantity: number;
   };
+  fetchCart: () => void;
 }
 
-const QuantitySelector = ({ userId, cartProduct }: Props) => {
+const QuantitySelector = ({ userId, cartProduct, fetchCart }: Props) => {
   const [quantity, setQuantity] = useState(cartProduct.quantity);
 
   const handleQuantity = async (value: string) => {
@@ -46,30 +47,31 @@ const QuantitySelector = ({ userId, cartProduct }: Props) => {
     setQuantity(newQuantity);
 
     try {
-        const response = await fetch("/api/cart", {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: userId,
-            productId: cartProduct.product.id,
-            quantity: newQuantity,
-          }),
-        });
-  
-        const data = await response.json();
-  
-        if (response.ok) {
-          toast.success("Quantity updated successfully!");
-        } else {
-          toast.error(`Failed to update quantity: ${data.error}`);
-        }
-      } catch (error) {
-        toast.error("Failed to update quantity.");
-        console.error("Error:", error);
+      const response = await fetch("/api/cart", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: userId,
+          productId: cartProduct.product.id,
+          quantity: newQuantity,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success("Quantity updated successfully!");
+        fetchCart(); // fetches the cart again in parent component
+      } else {
+        toast.error(`Failed to update quantity: ${data.error}`);
       }
-    };
+    } catch (error) {
+      toast.error("Failed to update quantity.");
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <Select value={String(quantity)} onValueChange={handleQuantity}>

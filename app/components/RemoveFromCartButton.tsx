@@ -5,9 +5,10 @@ import { toast } from "sonner";
 
 interface Props {
   productId: string;
+  removeFromCart: (productId: string) => void;
 }
 
-const RemoveFromCartButton = ({ productId }: Props) => {
+const RemoveFromCartButton = ({ productId, removeFromCart }: Props) => {
   const handleRemoveFromCart = async () => {
     try {
       const response = await fetch("/api/cart", {
@@ -24,6 +25,10 @@ const RemoveFromCartButton = ({ productId }: Props) => {
       }
 
       toast.success("Removed from cart!");
+
+      // triggers the function from page.tsx
+      // which updates the UI (without a backend call)
+      removeFromCart(productId);
     } catch (error) {
       console.error("Error removing from cart:", error);
       toast.error("An error occurred. Please try again later.");

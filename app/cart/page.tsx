@@ -1,3 +1,6 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -6,62 +9,85 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { prisma } from "@/prisma/client";
-import { getServerSession } from "next-auth";
-import Image from "next/image";
-import Link from "next/link";
-import { NextResponse } from "next/server";
-import { authOptions } from "../api/auth/[...nextauth]/route";
-import QuantitySelector from "../components/QuantitySelector";
-import RemoveFromCartButton from "../components/RemoveFromCartButton";
-import type { Metadata } from "next";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import React, { useEffect, useState } from "react";
+import QuantitySelector from "../components/QuantitySelector";
+import Link from "next/link";
+import Image from "next/image";
+import RemoveFromCartButton from "../components/RemoveFromCartButton";
+import { toast } from "sonner";
 import NumberFlow from "@number-flow/react";
 
-interface ProductInfo {
-  width?: number;
-  height?: number;
+interface ProductImage {
+  productId: string;
+  path: string;
+  id: string;
+  alt: string;
+  createdAt: Date;
+  isPrimary: boolean;
 }
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: "Your Cart - Ecommer",
-    description: "Manage products in your cart.",
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  createdAt: Date;
+  updatedAt: Date;
+  categoryId: string;
+  images: ProductImage[];
+}
+
+interface Cart {
+  id: string;
+  userId: string;
+  productId: string;
+  quantity: number;
+  addedAt: Date;
+  product: Product;
+}
+
+const CartPage = () => {
+  const [cart, setCart] = useState<Cart[]>([]);
+  const [cartTotal, setCartTotal] = useState<number>(0);
+
+  const removeFromCart = (productId: string) => {
+    setCart((prevCart) =>
+      prevCart.filter((item) => item.productId !== productId)
+    );
   };
-}
 
-const CartPage = async ({ width, height }: ProductInfo) => {
-  const session = await getServerSession(authOptions);
-  if (!session)
-    return NextResponse.json(
-      { error: "User must be logged in!" },
-      { status: 401 }
+  const fetchCart = async () => {
+    try {
+      const response = await fetch("/api/cart", { cache: "no-store" });
+
+      if (!response.ok) throw new Error("Failed to fetch cart!");
+
+      const cartData: Cart[] = await response.json();
+      setCart(cartData);
+    } catch (error) {
+      console.log("Error fetching cart: ", error);
+      toast.error("Error fetching the cart!");
+    }
+  };
+
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  useEffect(() => {
+    const total = cart.reduce(
+      (acc, item) => acc + item.quantity * item.product.price,
+      0
     );
 
-  const user = await prisma.user.findFirst({
-    where: { email: session.user?.email! },
-  });
-
-  if (!user) {
-    return NextResponse.json({ error: "User not found." }, { status: 400 });
-  }
-
-  const cartProducts = await prisma.cart.findMany({
-    where: { userId: user.id },
-    include: {
-      product: { include: { images: { where: { isPrimary: true } } } },
-    },
-    orderBy: { addedAt: "desc" },
-  });
-
-  const cartTotal = cartProducts.reduce((sum, cartProduct) => {
-    return sum + cartProduct.product.price * cartProduct.quantity;
-  }, 0);
+    setCartTotal(total);
+  }, [cart]);
 
   return (
     <>
-      {cartProducts.length === 0 ? (
+      {cart.length === 0 ? (
         <div className="full-screen-height flex justify-center align-center">
           <p className="text-2xl my-auto">Your cart is empty!</p>
         </div>
@@ -70,38 +96,44 @@ const CartPage = async ({ width, height }: ProductInfo) => {
           <h1>Your Cart</h1>
           <div className="grid grid-cols-[2fr_1fr] min-h-full gap-5">
             <section>
-              {cartProducts.map((cartProduct) => {
+              {cart.map((cartProduct) => {
                 const product = cartProduct.product;
                 const productImage = cartProduct.product.images[0];
+
                 return (
-                  <Card className="col-start-1 mb-5">
+                  <Card key={cartProduct.id} className="col-start-1 mb-5">
                     <div className="flex h-full w-full">
-                      <CardContent className="pt-6 flex-shrink-0 my-auto aspect-square flex items-center justify-center">
+                      <CardContent
+                        className="pt-6 flex-shrink-0 my-auto aspect-square 
+                      flex items-center justify-center"
+                      >
                         <Image
                           src={productImage.path}
                           alt={productImage.alt}
-                          width={width ? width : 230}
-                          height={height ? height : 230}
+                          width={230}
+                          height={230}
                           className="my-auto"
                         />
                       </CardContent>
                       <div className="flex flex-col justify-between w-full">
                         <CardHeader className="pl-0">
-                          <Link href={`/products/${cartProduct.productId}`}>
-                            <CardTitle>
-                              {product.name.length > 60
-                                ? product.name.substring(0, 60) + "..."
-                                : product.name}
+                          <Link href={`/products/${product.id}`}>
+                            <CardTitle className="line-clamp-2">
+                              {product.name}
                             </CardTitle>
                           </Link>
                           <h3>${product.price.toLocaleString()}</h3>
                         </CardHeader>
                         <CardFooter className="grid grid-cols-2 gap-3 pl-0">
                           <QuantitySelector
+                            fetchCart={fetchCart}
                             cartProduct={cartProduct}
-                            userId={user.id}
+                            userId={cart[0].userId}
                           />
-                          <RemoveFromCartButton productId={product.id} />
+                          <RemoveFromCartButton
+                            removeFromCart={removeFromCart}
+                            productId={product.id}
+                          />
                         </CardFooter>
                       </div>
                     </div>
@@ -110,20 +142,18 @@ const CartPage = async ({ width, height }: ProductInfo) => {
               })}
             </section>
             <section>
-              <Card className="flex flex-col">
+              <Card className="flex flex-col max-h-[var(--full-screen-height)] overflow-scroll">
                 <CardHeader>
                   <CardTitle>Cart Summary</CardTitle>
-                  <CardDescription>
-                    Info on your cart at a glance.
-                  </CardDescription>
+                  <CardDescription>Your cart at a glance.</CardDescription>
                 </CardHeader>
-                <CardContent className="flex-shrink-0 my-auto">
+                <CardContent className="flex-shrink-0 mb-auto">
                   <div>
-                    {cartProducts.map((cartProduct) => {
+                    {cart.map((cartProduct) => {
                       const product = cartProduct.product;
 
                       return (
-                        <div className="flex justify-between gap-3 mb-3">
+                        <div className="flex justify-between gap-3 mb-2.5">
                           <p className="w-[70%] line-clamp-2">{product.name}</p>
                           <p className="text-stone-500">
                             ${product.price.toLocaleString()} *{" "}
@@ -133,9 +163,20 @@ const CartPage = async ({ width, height }: ProductInfo) => {
                       );
                     })}
                     <Separator className="w-[85%] justify-self-center" />
-                    <div className="mt-3 flex justify-between font-semibold">
+                    <div className="mt-2 flex justify-between font-semibold">
                       <p>Total</p>
-                      <p>${cartTotal.toLocaleString()}</p>
+                      <NumberFlow
+                        value={cartTotal}
+                        format={{
+                          notation: "standard",
+                          style: "currency",
+                          currency: "USD",
+                        }}
+                        spinTiming={{
+                          duration: 1250,
+                          easing: "cubic-bezier(0, 0, 0.2, 1)",
+                        }}
+                      />
                     </div>
                   </div>
                 </CardContent>
