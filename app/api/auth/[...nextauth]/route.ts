@@ -39,6 +39,7 @@ export const authOptions: NextAuthOptions = {
   // implement database session over jwt for production
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
   },
   // pages: {
   //   signIn: "/signin",
