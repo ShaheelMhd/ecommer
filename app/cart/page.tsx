@@ -17,6 +17,7 @@ import Image from "next/image";
 import RemoveFromCartButton from "../components/RemoveFromCartButton";
 import { toast } from "sonner";
 import NumberFlow from "@number-flow/react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface ProductImage {
   productId: string;
@@ -51,6 +52,7 @@ interface Cart {
 const CartPage = () => {
   const [cart, setCart] = useState<Cart[]>([]);
   const [cartTotal, setCartTotal] = useState<number>(0);
+  const [loading, setLoading] = useState(true);
 
   const removeFromCart = (productId: string) => {
     setCart((prevCart) =>
@@ -69,6 +71,8 @@ const CartPage = () => {
     } catch (error) {
       console.log("Error fetching cart: ", error);
       toast.error("Error fetching the cart!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,7 +91,20 @@ const CartPage = () => {
 
   return (
     <>
-      {cart.length === 0 ? (
+      {loading ? (
+        <>
+          <h1>Your Cart</h1>
+          <div className="grid grid-cols-[2fr_1fr] min-h-full gap-5">
+            <section className="*:mb-5">
+              <Skeleton className="p-6 h-[280px] w-full rounded-xl" />
+              <Skeleton className="p-6 h-[280px] w-full rounded-xl" />
+            </section>
+            <section>
+              <Skeleton className="h-[280px] w-full rounded-xl" />
+            </section>
+          </div>
+        </>
+      ) : cart.length === 0 ? (
         <div className="full-screen-height flex justify-center align-center">
           <p className="text-2xl my-auto">Your cart is empty!</p>
         </div>
