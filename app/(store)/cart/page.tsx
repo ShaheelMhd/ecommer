@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import React, { useEffect, useState } from "react";
-import QuantitySelector from "../components/QuantitySelector";
+import QuantitySelector from "@/components/QuantitySelector";
 import Link from "next/link";
 import Image from "next/image";
-import RemoveFromCartButton from "../components/RemoveFromCartButton";
+import RemoveFromCartButton from "@/components/RemoveFromCartButton";
 import { toast } from "sonner";
 import NumberFlow from "@number-flow/react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -63,6 +63,9 @@ const CartPage = () => {
   const fetchCart = async () => {
     try {
       const response = await fetch("/api/cart", { cache: "no-store" });
+
+      if (response.status === 401 || response.status === 400)
+        return toast.error("Please log in to view your cart!");
 
       if (!response.ok) throw new Error("Failed to fetch cart!");
 

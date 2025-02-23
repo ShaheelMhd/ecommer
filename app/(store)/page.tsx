@@ -1,5 +1,6 @@
-import LongProductCard from "./components/LongProductCard";
-import ProductCard from "./components/ProductCard";
+import ProductCard from "@/components/ProductCard";
+import LongProductCard from "@/components/LongProductCard";
+
 
 export default function Home() {
   return (

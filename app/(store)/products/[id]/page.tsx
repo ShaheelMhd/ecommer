@@ -1,6 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import AddToCartButton from "@/app/components/AddToCartButton";
-import GoToCartButton from "@/app/components/GoToCartButton";
+import AddToCartButton from "@/components/AddToCartButton";
+import GoToCartButton from "@/components/GoToCartButton";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/prisma/client";
 import type { Metadata } from "next";

@@ -2,21 +2,21 @@
 
 import { Button } from "@/components/ui/button";
 import {
+  Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, useForm } from "react-hook-form";
-import { FaGoogle } from "react-icons/fa";
+import React from "react";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-import LoginForm from "../components/LoginForm";
 
-const SignInPage = () => {
+const LoginForm = () => {
   const formSchema = z.object({
     email: z.string().email(),
     password: z.string().min(8).max(100),
@@ -28,10 +28,9 @@ const SignInPage = () => {
   });
 
   return (
-    <div className="flex flex-col items-center justify-center gap-5 w-fit mx-auto">
-      <LoginForm />
-      {/* <Form {...form}>
-        <form className="space-y-8">
+    <div>
+      <Form {...form}>
+        <form className="space-y-8 w-[25vw]">
           <FormField
             control={form.control}
             name="email"
@@ -39,7 +38,7 @@ const SignInPage = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="john@appleseed.com" {...field} />
+                  <Input placeholder="Enter your email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -52,22 +51,23 @@ const SignInPage = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="P@$$w0rD..." {...field} />
+                  <Input
+                    type="password"
+                    placeholder="Enter your password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit">Sign In</Button>
+          <Button className="p-6 py-7 text-md w-full" type="submit">
+            Sign In
+          </Button>
         </form>
-      </Form> */}
-      <Separator className="opacity-30" />
-      <Button className="p-6 py-7 text-md">
-        <FaGoogle className="mr-1" />
-        Continue with Google
-      </Button>
+      </Form>
     </div>
   );
 };
 
-export default SignInPage;
+export default LoginForm;
