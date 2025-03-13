@@ -87,6 +87,7 @@ model Product {
   id          String   @id @default(uuid())
   name        String   @db.VarChar(255)
   description String   @db.Text
+  specs       Json?
   price       Float
   stock       Int
   createdAt   DateTime @default(now())

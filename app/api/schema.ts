@@ -8,15 +8,16 @@ export const categorySchema = z.object({
 export const productSchema = z.object({
   name: z.string().min(3),
   description: z.string().max(2000),
+  specs: z.record(z.union([z.string(), z.number(), z.array(z.string())])).optional(),
   price: z.number(),
   stock: z.number(),
-  categoryId: z.string().max(191),
+  category: z.string().max(191),
 });
 
 export const imageSchema = z.object({
   path: z.string().max(255),
   alt: z.string().max(255),
-  isPrimary: z.boolean(),
+  isPrimary: z.boolean().optional(),
   productId: z.string().max(191),
 });
 

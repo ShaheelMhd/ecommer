@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
         data: {
         path: body.path,
         alt: body.alt,
-        isPrimary: (primaryImage ? false : true),
+        isPrimary: (!existingImages ? true : primaryImage ? false : true),
         productId: body.productId,
         },
     });

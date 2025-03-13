@@ -86,6 +86,19 @@ const ProductPage = async ({ params: { id } }: Props) => {
         <h1>Description</h1>
         <TextClamp text={product.description} />
       </section>
+      {product.specs ? (
+        <section id="specs" className="mb-[3rem]">
+          <h1>Specifications</h1>
+          <ul>
+            {Object.entries(product.specs!).map(([key, value]) => (
+              <span className="grid grid-cols-[1fr_5fr] mb-1.5">
+                <p className="font-bold uppercase">{key}</p>
+                <li key={key}>{value}</li>
+              </span>
+            ))}
+          </ul>
+        </section>
+      ) : null}
       <section id="reviews">
         <h1>Reviews</h1>
       </section>
