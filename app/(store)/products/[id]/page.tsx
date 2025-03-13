@@ -1,12 +1,12 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import AddToCartButton from "@/components/AddToCartButton";
 import GoToCartButton from "@/components/GoToCartButton";
+import TextClamp from "@/components/TextClamp";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/prisma/client";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -49,37 +49,47 @@ const ProductPage = async ({ params: { id } }: Props) => {
   if (!product) return notFound();
 
   return (
-    <section className="grid grid-cols-[3fr_4fr] gap-8 mt-5">
-      <Image
-        src={product.images[0]?.path}
-        alt={product.images[0]?.alt}
-        width={400}
-        height={400}
-        className="justify-self-center my-auto"
-      />
-      <div className="col-start-2 pr-10 flex flex-col justify-between">
-        <div>
-          <h2>{product.name}</h2>
-          <h3 className="text-stone-400 mt-1">
-            ${product.price.toLocaleString()}
-          </h3>
-          <p className="mt-5 line-clamp-5">{product.description}</p>
+    <>
+      <section className="mb-[5rem] grid grid-cols-[3fr_4fr] gap-8 mt-5 min-h-[25rem]">
+        <Image
+          src={product.images[0]?.path}
+          alt={product.images[0]?.alt}
+          width={400}
+          height={400}
+          className="justify-self-center my-auto"
+        />
+        <div className="col-start-2 pr-10 flex flex-col justify-between">
+          <div>
+            <h2 className="line-clamp-2">{product.name}</h2>
+            <h3 className="text-stone-400 mt-1">
+              ${product.price.toLocaleString()}
+            </h3>
+          </div>
+          <div className="mt-6 flex justify-center gap-3">
+            {(await prisma.cart.findFirst({
+              where: { productId: id, userId: user?.id },
+            })) ? (
+              <GoToCartButton />
+            ) : (
+              <AddToCartButton className="w-[50%]" productId={id} />
+            )}
+            <Button className="w-[50%]" variant="default">
+              Buy Now
+            </Button>
+          </div>
         </div>
-        <div className="mt-6 flex justify-center gap-3">
-          {/* also add user id to 'where' clause */}
-          {(await prisma.cart.findFirst({
-            where: { productId: id, userId: user?.id },
-          })) ? (
-            <GoToCartButton />
-          ) : (
-            <AddToCartButton className="w-[50%]" productId={id} />
-          )}
-          <Button className="w-[50%]" variant="default">
-            Buy Now
-          </Button>
-        </div>
-      </div>
-    </section>
+      </section>
+      {/* add product rating below the product name
+          add review section separate the component
+          review addable if product is bought by the user */}
+      <section id="description" className="mb-[3rem]">
+        <h1>Description</h1>
+        <TextClamp text={product.description} />
+      </section>
+      <section id="reviews">
+        <h1>Reviews</h1>
+      </section>
+    </>
   );
 };
 
