@@ -7,6 +7,7 @@ import { prisma } from "@/prisma/client";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -43,14 +44,42 @@ const ProductPage = async ({ params: { id } }: Props) => {
     where: {
       id: id,
     },
-    include: { images: { where: { productId: id } } },
+    include: { images: { where: { productId: id } }, category: true },
   });
 
   if (!product) return notFound();
 
+  // make brand name a must have in the specs
+  const brand = Object.entries(product.specs!).filter(
+    ([key, value]) => key === "Brand"
+  )[0][1];
+  console.log(brand);
+
   return (
     <>
-      <section className="mb-[5rem] grid grid-cols-[3fr_4fr] gap-8 mt-5 min-h-[25rem]">
+      <nav>
+        <Link
+          href="/"
+          className="transition duration-200 opacity-80 hover:opacity-100 hover:underline"
+        >
+          Home
+        </Link>{" "}
+        &gt;{" "}
+        <Link
+          href={`/categories/${product.categoryId}`}
+          className="transition duration-200 capitalize opacity-80 hover:opacity-100 hover:underline"
+        >
+          {product.category.name}
+        </Link>
+        {" > "}
+        <Link
+          href={`/categories/${product.categoryId}/${brand}`}
+          className="transition duration-200 opacity-80 hover:opacity-100 hover:underline"
+        >
+          {brand}
+        </Link>
+      </nav>
+      <section className="mb-[5rem] grid grid-cols-[3fr_4fr] gap-8 mt-7 min-h-[25rem]">
         <Image
           src={product.images[0]?.path}
           alt={product.images[0]?.alt}
@@ -60,6 +89,9 @@ const ProductPage = async ({ params: { id } }: Props) => {
         />
         <div className="col-start-2 pr-10 flex flex-col justify-between">
           <div>
+            <Link href={`/categories/${product.categoryId}/${brand}`} className="opacity-80 hover:opacity-100 transition duration-200">
+              View {brand} Products
+            </Link>
             <h2 className="line-clamp-2">{product.name}</h2>
             <h3 className="text-stone-400 mt-1">
               ${product.price.toLocaleString()}
