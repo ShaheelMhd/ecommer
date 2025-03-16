@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import GoToCartButton from "./GoToCartButton";
+import GoToCartButton from "./ViewCartButton";
 
 // productId from ProductCard -- already made a prisma call there
 interface Props {
@@ -25,7 +25,14 @@ const AddToCartButton = ({ productId, className }: Props) => {
         throw new Error("Failed to add to cart");
       }
 
-      toast.success("Added to cart!", {action: {label: "View Cart", onClick: () => {window.location.href = "/cart"}}});
+      toast.success("Added to cart!", {
+        action: {
+          label: "View Cart",
+          onClick: () => {
+            window.location.href = "/cart";
+          },
+        },
+      });
     } catch (error) {
       console.error("Error adding to cart:", error);
       toast.error("An error occurred. Please try again later.");

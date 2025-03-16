@@ -8,7 +8,10 @@ export const categorySchema = z.object({
 export const productSchema = z.object({
   name: z.string().min(3),
   description: z.string().max(2000),
-  specs: z.record(z.union([z.string(), z.number(), z.array(z.string())])).optional(),
+  // make brand name required in the specs
+  specs: z
+    .record(z.union([z.string(), z.number(), z.array(z.string())]))
+    .optional(),
   price: z.number(),
   stock: z.number(),
   category: z.string().max(191),
@@ -38,7 +41,13 @@ export const userSchema = z.object({
 export const cartSchema = z.object({
   // no need to check because the userId is derived from backend
   // and not sent by the user in the api
-  // userId: z.string().max(191), 
+  // userId: z.string().max(191),
   productId: z.string().max(191),
   quantity: z.number().max(100).default(1),
+});
+
+export const reviewSchema = z.object({
+  productId: z.string().max(191),
+  rating: z.number().min(1).max(5),
+  comment: z.string().min(3).max(500).optional(),
 });

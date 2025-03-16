@@ -1,14 +1,20 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import AddToCartButton from "@/components/AddToCartButton";
-import GoToCartButton from "@/components/GoToCartButton";
+import ReviewForm from "@/components/ReviewForm";
+import StarRating from "@/components/StarRating";
 import TextClamp from "@/components/TextClamp";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import ViewCartButton from "@/components/ViewCartButton";
 import { prisma } from "@/prisma/client";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { MdDelete } from "react-icons/md";
+import { FaChevronRight } from "react-icons/fa";
+import DeleteReviewButton from "@/components/DeleteReviewButton";
 
 interface Props {
   params: { id: string };
@@ -50,31 +56,50 @@ const ProductPage = async ({ params: { id } }: Props) => {
   if (!product) return notFound();
 
   // make brand name a must have in the specs
-  const brand = Object.entries(product.specs!).filter(
-    ([key, value]) => key === "Brand"
-  )[0][1];
-  console.log(brand);
+  const brand = product.specs
+    ? Object.entries(product.specs!).filter(
+        ([key, value]) => key === "Brand"
+      )[0][1]
+    : null;
+
+  const reviews = await prisma.review.findMany({
+    where: { productId: product.id },
+    include: { user: { select: { name: true } } },
+  });
+
+  const totalRating =
+    reviews.length === 0
+      ? 0
+      : reviews.reduce((acc, review) => acc + review.rating, 0) /
+        reviews.length;
+
+  // dynamically set this based on if user has bought this product before
+  const boughtBefore = true;
+  const reviewed =
+    reviews.filter((review) => review.userId === user!.id).length > 0
+      ? true
+      : false;
 
   return (
     <>
-      <nav>
+      <nav className="flex gap-1 items-center">
         <Link
           href="/"
-          className="transition duration-200 opacity-80 hover:opacity-100 hover:underline"
+          className="transition duration-200 opacity-80 hover:opacity-100"
         >
           Home
         </Link>{" "}
-        &gt;{" "}
+        <FaChevronRight className="scale-[65%]" />
         <Link
           href={`/categories/${product.categoryId}`}
-          className="transition duration-200 capitalize opacity-80 hover:opacity-100 hover:underline"
+          className="transition duration-200 capitalize opacity-80 hover:opacity-100"
         >
           {product.category.name}
         </Link>
-        {" > "}
+        <FaChevronRight className="scale-[65%]" />
         <Link
           href={`/categories/${product.categoryId}/${brand}`}
-          className="transition duration-200 opacity-80 hover:opacity-100 hover:underline"
+          className="transition duration-200 opacity-80 hover:opacity-100"
         >
           {brand}
         </Link>
@@ -89,19 +114,37 @@ const ProductPage = async ({ params: { id } }: Props) => {
         />
         <div className="col-start-2 pr-10 flex flex-col justify-between">
           <div>
-            <Link href={`/categories/${product.categoryId}/${brand}`} className="opacity-80 hover:opacity-100 transition duration-200">
+            <Link
+              href={`/categories/${product.categoryId}/${brand}`}
+              className="opacity-80 hover:opacity-100 transition duration-200"
+            >
               View {brand} Products
             </Link>
             <h2 className="line-clamp-2">{product.name}</h2>
-            <h3 className="text-stone-400 mt-1">
-              ${product.price.toLocaleString()}
-            </h3>
+            <span className="mt-1 flex gap-3 items-center">
+              <h3 className="text-stone-400">
+                ${product.price.toLocaleString()}
+              </h3>
+              <Separator orientation="vertical" className="h-4" />
+              {reviews.length > 0 ? (
+                <>
+                  <StarRating rating={totalRating} />
+                  {reviews.length === 1 ? (
+                    <p className="opacity-85">{`${totalRating}/5 from ${reviews.length} rating`}</p>
+                  ) : (
+                    <p className="opacity-85">{`${totalRating}/5 from ${reviews.length} ratings`}</p>
+                  )}
+                </>
+              ) : (
+                <h3 className="text-stone-400">No ratings yet!</h3>
+              )}
+            </span>
           </div>
           <div className="mt-6 flex justify-center gap-3">
             {(await prisma.cart.findFirst({
               where: { productId: id, userId: user?.id },
             })) ? (
-              <GoToCartButton />
+              <ViewCartButton />
             ) : (
               <AddToCartButton className="w-[50%]" productId={id} />
             )}
@@ -111,28 +154,81 @@ const ProductPage = async ({ params: { id } }: Props) => {
           </div>
         </div>
       </section>
-      {/* add product rating below the product name
-          add review section separate the component
-          review addable if product is bought by the user */}
       <section id="description" className="mb-[3rem]">
         <h1>Description</h1>
         <TextClamp text={product.description} />
       </section>
-      {product.specs ? (
+      {product.specs && (
         <section id="specs" className="mb-[3rem]">
           <h1>Specifications</h1>
           <ul>
             {Object.entries(product.specs!).map(([key, value]) => (
-              <span className="grid grid-cols-[1fr_5fr] mb-1.5">
+              <span className="grid grid-cols-[1fr_5fr] mb-1.5" key={key}>
                 <p className="font-bold uppercase">{key}</p>
-                <li key={key}>{value}</li>
+                <p>{value}</p>
               </span>
             ))}
           </ul>
         </section>
-      ) : null}
+      )}
       <section id="reviews">
         <h1>Reviews</h1>
+        {reviews.length === 0 ? (
+          <h3>No reviews yet!</h3>
+        ) : (
+          <>
+            {boughtBefore && !reviewed ? (
+              <ReviewForm productId={id} />
+            ) : (
+              reviews
+                .filter((review) => review.userId === user!.id)
+                .map((review) => (
+                  <div key={review.id}>
+                    <span className="flex justify-between">
+                      <h2>You</h2>
+                      <DeleteReviewButton productId={id} />
+                    </span>
+                    <span className="flex gap-2 items-center mb-2">
+                      <StarRating rating={review.rating} />
+                      <p>{`(${review.rating}/5)`}</p>
+                    </span>
+                    <p className="text-lg mb-1">{review.comment}</p>
+                    <p className="opacity-80 text-sm">
+                      Added on {review.createdAt.toLocaleDateString()} at{" "}
+                      {review.createdAt.toLocaleTimeString("en-US", {
+                        hour: "numeric",
+                        minute: "2-digit",
+                        hour12: true,
+                      })}
+                    </p>
+                  </div>
+                ))
+            )}
+            {reviews
+              .filter((review) => review.userId !== user!.id)
+              .map((review) => (
+                <div key={review.id}>
+                  {reviews.length > 1 ? (
+                    <Separator className="my-5 opacity-65 w-[80%] justify-self-center" />
+                  ) : null}
+                  <h2>{review.user.name}</h2>
+                  <span className="flex gap-2 items-center mb-2">
+                    <StarRating rating={review.rating} />
+                    <p>{`(${review.rating}/5)`}</p>
+                  </span>
+                  <p className="text-lg mb-1">{review.comment}</p>
+                  <p className="opacity-80 text-sm">
+                    Added on {review.createdAt.toLocaleDateString()} at{" "}
+                    {review.createdAt.toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}
+                  </p>
+                </div>
+              ))}
+          </>
+        )}
       </section>
     </>
   );

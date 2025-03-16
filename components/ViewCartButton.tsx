@@ -1,19 +1,17 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Router } from "next/router";
-import React from "react";
 
-const GoToCartButton = () => {
+const ViewCartButton = () => {
   const handleClick = () => {
     window.location.href = "/cart";
   };
 
   return (
     <Button variant="secondary" className="w-[50%]" onClick={handleClick}>
-      Go To Cart
+      View Cart
     </Button>
   );
 };
 
-export default GoToCartButton;
+export default ViewCartButton;
