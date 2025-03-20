@@ -9,12 +9,15 @@ import { z } from "zod";
 import StarRating from "./StarRating";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import UserReview from "./UserReview";
 
 interface Props {
   productId: string;
+  // callback to render the new review in the parent component
+  onReview: (review: UserReview) => void;
 }
 
-const ReviewForm = ({ productId }: Props) => {
+const ReviewForm = ({ productId, onReview }: Props) => {
   const commentSchema = z.object({
     comment: z
       .string()
@@ -53,7 +56,17 @@ const ReviewForm = ({ productId }: Props) => {
       });
 
       if (!response.ok) throw new Error(response.status.toString());
-      toast.success("Review added!")
+      toast.success("Review added!");
+
+      const newReview: UserReview = {
+        name: "You",
+        rating: rating,
+        comment: data.comment,
+        createdAt: new Date().toLocaleString(),
+      };
+
+      // Pass the new review to the parent component for rendering
+      onReview(newReview);
     } catch (error) {
       console.error("Error adding a review.", error);
       toast.error("Failed to add review.");
@@ -73,7 +86,6 @@ const ReviewForm = ({ productId }: Props) => {
       )}
       {!buttonVisible && (
         <>
-          {/* TODO: add dynamic page change on adding or removing review */}
           <p className="mb-1">Rating:</p>
           <StarRating selector onChange={handleRatingChange} />
           <form onSubmit={handleSubmit(onSubmit)} className="my-3">

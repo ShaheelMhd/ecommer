@@ -15,6 +15,7 @@ import { notFound } from "next/navigation";
 import { MdDelete } from "react-icons/md";
 import { FaChevronRight } from "react-icons/fa";
 import DeleteReviewButton from "@/components/DeleteReviewButton";
+import UserReview from "@/components/UserReview";
 
 interface Props {
   params: { id: string };
@@ -115,7 +116,7 @@ const ProductPage = async ({ params: { id } }: Props) => {
         <div className="col-start-2 pr-10 flex flex-col justify-between">
           <div>
             <Link
-              href={`/categories/${product.categoryId}/${brand}`}
+              href={`/brands/${brand}`}
               className="opacity-80 hover:opacity-100 transition duration-200"
             >
               View {brand} Products
@@ -178,7 +179,7 @@ const ProductPage = async ({ params: { id } }: Props) => {
         ) : (
           <>
             {boughtBefore && !reviewed ? (
-              <ReviewForm productId={id} />
+              <UserReview productId={id} />
             ) : (
               reviews
                 .filter((review) => review.userId === user!.id)
