@@ -1,10 +1,12 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import AddToCartButton from "@/components/AddToCartButton";
-import ReviewForm from "@/components/ReviewForm";
+import DeleteReviewButton from "@/components/DeleteReviewButton";
+import ProductCard from "@/components/ProductCard";
 import StarRating from "@/components/StarRating";
 import TextClamp from "@/components/TextClamp";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import UserReview from "@/components/UserReview";
 import ViewCartButton from "@/components/ViewCartButton";
 import { prisma } from "@/prisma/client";
 import type { Metadata } from "next";
@@ -12,10 +14,7 @@ import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MdDelete } from "react-icons/md";
 import { FaChevronRight } from "react-icons/fa";
-import DeleteReviewButton from "@/components/DeleteReviewButton";
-import UserReview from "@/components/UserReview";
 
 interface Props {
   params: { id: string };
@@ -80,6 +79,11 @@ const ProductPage = async ({ params: { id } }: Props) => {
     reviews.filter((review) => review.userId === user!.id).length > 0
       ? true
       : false;
+
+  // shows products in the same category as suggested
+  const suggested = await prisma.product.findMany({
+    where: { categoryId: product.categoryId },
+  });
 
   return (
     <>
@@ -172,7 +176,7 @@ const ProductPage = async ({ params: { id } }: Props) => {
           </ul>
         </section>
       )}
-      <section id="reviews">
+      <section id="reviews" className="mb-[3rem]">
         <h1>Reviews</h1>
         {reviews.length === 0 ? (
           <h3>No reviews yet!</h3>
@@ -230,6 +234,23 @@ const ProductPage = async ({ params: { id } }: Props) => {
               ))}
           </>
         )}
+      </section>
+      <section id="suggested">
+        <h1>Suggested for You</h1>
+        <div className="overflow-x-auto scrollbar-hidden w-full">
+          <div className="flex gap-3.5 w-max">
+            {suggested
+              .filter((product) => product.id !== id)
+              .map((product) => (
+                <div className="flex-shrink-0">
+                  <ProductCard
+                    id={product.id}
+                    className="w-[20rem] h-[27rem]"
+                  />
+                </div>
+              ))}
+          </div>
+        </div>
       </section>
     </>
   );

@@ -15,9 +15,11 @@ interface Props {
   id: string;
   width?: number;
   height?: number;
+  // useful for explicitly setting height of the card
+  className?: string; 
 }
 
-const ProductCard = async ({ id, width, height }: Props) => {
+const ProductCard = async ({ id, width, height, className }: Props) => {
   const product = await prisma.product.findUnique({
     where: {
       id: id,
@@ -36,7 +38,7 @@ const ProductCard = async ({ id, width, height }: Props) => {
   if (image.length === 0) return null;
 
   return (
-    <Card className="flex flex-col">
+    <Card className={`flex flex-col ${className}`}>
       <CardHeader>
         <Link href={`/products/${id}`}>
           <CardTitle className="line-clamp-2">{product.name}</CardTitle>
