@@ -55,13 +55,6 @@ const ProductPage = async ({ params: { id } }: Props) => {
 
   if (!product) return notFound();
 
-  // make brand name a must have in the specs
-  const brand = product.specs
-    ? Object.entries(product.specs!).filter(
-        ([key, value]) => key === "Brand"
-      )[0][1]
-    : null;
-
   const reviews = await prisma.review.findMany({
     where: { productId: product.id },
     include: { user: { select: { name: true } } },
@@ -96,17 +89,17 @@ const ProductPage = async ({ params: { id } }: Props) => {
         </Link>{" "}
         <FaChevronRight className="scale-[65%]" />
         <Link
-          href={`/categories/${product.categoryId}`}
-          className="transition duration-200 capitalize opacity-80 hover:opacity-100"
+          href={`/brands/${product.brand}`}
+          className="transition duration-200 opacity-80 hover:opacity-100"
         >
-          {product.category.name}
+          {product.brand}
         </Link>
         <FaChevronRight className="scale-[65%]" />
         <Link
-          href={`/categories/${product.categoryId}/${brand}`}
-          className="transition duration-200 opacity-80 hover:opacity-100"
+          href={`/categories/${product.categoryId}?brand=${product.brand}`}
+          className="transition duration-200 capitalize opacity-80 hover:opacity-100"
         >
-          {brand}
+          {product.category.name}
         </Link>
       </nav>
       <section className="mb-[5rem] grid grid-cols-[3fr_4fr] gap-8 mt-7 min-h-[25rem]">
@@ -120,10 +113,10 @@ const ProductPage = async ({ params: { id } }: Props) => {
         <div className="col-start-2 pr-10 flex flex-col justify-between">
           <div>
             <Link
-              href={`/brands/${brand}`}
+              href={`/brands/${product.brand}`}
               className="opacity-80 hover:opacity-100 transition duration-200"
             >
-              View {brand} Products
+              View {product.brand} Products
             </Link>
             <h2 className="line-clamp-2">{product.name}</h2>
             <span className="mt-1 flex gap-3 items-center">
@@ -179,7 +172,14 @@ const ProductPage = async ({ params: { id } }: Props) => {
       <section id="reviews" className="mb-[3rem]">
         <h1>Reviews</h1>
         {reviews.length === 0 ? (
-          <h3>No reviews yet!</h3>
+          <div>
+            <h3>No reviews yet!</h3>
+            {boughtBefore && (
+              <div className="mt-3">
+                <UserReview productId={id} />
+              </div>
+            )}
+          </div>
         ) : (
           <>
             {boughtBefore && !reviewed ? (
