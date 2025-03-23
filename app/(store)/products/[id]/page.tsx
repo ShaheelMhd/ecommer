@@ -89,7 +89,7 @@ const ProductPage = async ({ params: { id } }: Props) => {
         </Link>{" "}
         <FaChevronRight className="scale-[65%]" />
         <Link
-          href={`/brands/${product.brand}`}
+          href={`/${product.brand}`}
           className="transition duration-200 opacity-80 hover:opacity-100"
         >
           {product.brand}

@@ -94,9 +94,8 @@ h3 {
 }
 
 .full-screen-height {
-  /* 5rem page padding + 4rem navbar height */
-  /* + 2rem to account for margin so that content is centered on the screen */
-  height: calc(100dvh - (5rem + 4rem + 2rem));
+  /* 5rem: page padding, 4rem: navbar */
+  height: calc(100dvh - (5rem + 4rem));
 }
 
 .scrollbar-hidden::-webkit-scrollbar {
