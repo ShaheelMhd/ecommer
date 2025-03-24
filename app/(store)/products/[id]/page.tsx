@@ -242,7 +242,7 @@ const ProductPage = async ({ params: { id } }: Props) => {
             {suggested
               .filter((product) => product.id !== id)
               .map((product) => (
-                <div className="flex-shrink-0">
+                <div className="flex-shrink-0" key={product.id}>
                   <ProductCard
                     id={product.id}
                     className="w-[20rem] h-[27rem]"
