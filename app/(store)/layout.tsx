@@ -8,9 +8,9 @@ interface Props {
 
 const StoreLayout = ({ children }: Props) => {
   return (
-    <div className="min-h-dvh">
+    <div className="min-h-screen flex flex-col">
       <NavBar />
-      <div className="p-10">{children}</div>
+      <div className="p-10 flex-grow">{children}</div>
       <Footer />
     </div>
   );
