@@ -8,8 +8,8 @@ interface Props {
 }
 
 const CategoryPage = async ({ params: { category } }: Props) => {
-  const categoryId = await prisma.category.findFirstOrThrow({
-    where: { name: category },
+  const categoryId = await prisma.category.findFirst({
+    where: { id: category },
     select: { id: true, name: true },
   });
 
