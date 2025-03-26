@@ -1,6 +1,7 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import AddToCartButton from "@/components/AddToCartButton";
 import DeleteReviewButton from "@/components/DeleteReviewButton";
+import ImageCarousel from "@/components/ImageCarousel";
 import ProductCard from "@/components/ProductCard";
 import StarRating from "@/components/StarRating";
 import TextClamp from "@/components/TextClamp";
@@ -103,13 +104,20 @@ const ProductPage = async ({ params: { id } }: Props) => {
         </Link>
       </nav>
       <section className="mb-[5rem] grid grid-cols-[3fr_4fr] gap-8 mt-7 min-h-[25rem]">
-        <Image
-          src={product.images[0]?.path}
-          alt={product.images[0]?.alt}
-          width={400}
-          height={400}
-          className="justify-self-center my-auto"
-        />
+        {product.images.length === 1 ? (
+          <Image
+            key={product.images[0].id}
+            src={product.images[0]?.path}
+            alt={product.images[0]?.alt}
+            width={400}
+            height={400}
+            className="justify-self-center my-auto"
+          />
+        ) : (
+          <div className="w-[85%] justify-self-center">
+            <ImageCarousel images={product.images} />
+          </div>
+        )}
         <div className="col-start-2 pr-10 flex flex-col justify-between">
           <div>
             <Link
