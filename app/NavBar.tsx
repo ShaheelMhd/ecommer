@@ -13,6 +13,7 @@ import { GrSearch } from "react-icons/gr";
 import { IoBagOutline } from "react-icons/io5";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { Separator } from "@/components/ui/separator";
+import Search from "./Search";
 
 const NavBar = async () => {
   const session = await getServerSession(authOptions);
@@ -26,9 +27,10 @@ const NavBar = async () => {
         </Link>
       </div>
       <div className="justify-self-end flex items-center gap-4">
-        <Link href="/search">
+        {/* <Link href="/search">
           <GrSearch className="size-5" />
-        </Link>
+        </Link> */}
+        <Search />
         <Link href="/cart">
           <IoBagOutline className="size-5" />
         </Link>

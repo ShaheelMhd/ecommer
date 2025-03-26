@@ -13,7 +13,11 @@ const Footer = ({ className }: Props) => {
       <p>Ecommer Inc.</p>
       <p>
         A Project by{" "}
-        <Link href="https://github.com/ShaheelMhd" className="text-blue-400">
+        <Link
+          href="https://github.com/ShaheelMhd"
+          target="_blank"
+          className="text-blue-400"
+        >
           @ShaheelMhd
         </Link>
       </p>
