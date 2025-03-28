@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -14,17 +15,15 @@ model User {
   email         String?   @unique @db.VarChar(255)
   emailVerified DateTime?
   image         String?
-  password      String?   @db.VarChar(255) // null for OAuth users
-  role          String    @default("user") // "user" or "admin"
+  password      String?   @db.VarChar(255)
+  role          String    @default("user")
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-
-  // Relations
-  accounts  Account[]
-  sessions  Session[]
-  orders    Order[]
-  reviews   Review[]
-  cartItems Cart[]
+  accounts      Account?
+  cartItems     Cart[]
+  orders        Order[]
+  reviews       Review[]
+  sessions      Session[]
 }
 
 model Account {
@@ -33,19 +32,17 @@ model Account {
   type                     String
   provider                 String
   providerAccountId        String
-  refresh_token            String?  @db.Text
-  access_token             String?  @db.Text
+  refresh_token            String?
+  access_token             String?
   expires_at               Int?
   token_type               String?
   scope                    String?
-  id_token                 String?  @db.Text
+  id_token                 String?
   session_state            String?
   refresh_token_expires_in Int?
   createdAt                DateTime @default(now())
   updatedAt                DateTime @updatedAt
-
-  // Relations
-  user User @relation(fields: [userId], references: [id])
+  user                     User     @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerAccountId])
   @@index([userId])
@@ -58,9 +55,7 @@ model Session {
   expires      DateTime
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-
-  // Relations
-  user User @relation(fields: [userId], references: [id])
+  user         User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
@@ -74,99 +69,81 @@ model VerificationToken {
 }
 
 model Category {
-  id          String   @id @default(uuid())
-  name        String   @unique @db.VarChar(255)
-  description String?  @db.Text
-  createdAt   DateTime @default(now())
-
-  // Relations
-  products Product[]
+  id          String    @id @default(uuid())
+  name        String    @unique @db.VarChar(255)
+  description String?
+  createdAt   DateTime  @default(now())
+  products    Product[]
 }
 
 model Product {
-  id          String   @id @default(uuid())
-  name        String   @db.VarChar(255)
-  description String   @db.Text
+  id          String         @id @default(uuid())
+  name        String         @db.VarChar(255)
+  description String
   specs       Json?
-  brand       String   @default("") @db.VarChar(50)
+  brand       String         @default("") @db.VarChar(50)
   price       Float
   stock       Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relations
-  category   Category       @relation(fields: [categoryId], references: [id])
-  categoryId String
-  reviews    Review[]
-  orderItems OrderItem[]
-  images     ProductImage[]
-  cartItems  Cart[] // Relation with Cart for items added to carts
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  categoryId  String
+  cartItems   Cart[]
+  orderItems  OrderItem[]
+  category    Category       @relation(fields: [categoryId], references: [id])
+  images      ProductImage[]
+  reviews     Review[]
 }
 
 model ProductImage {
-  id        String  @id @default(uuid())
-  path      String  @db.VarChar(255) // Path or URL for the product image
-  alt       String  @db.VarChar(255) // Alt text for the image
-  isPrimary Boolean @default(false) // Indicates if this is the primary image
+  id        String   @id @default(uuid())
+  path      String   @db.VarChar(255)
+  alt       String   @db.VarChar(255)
+  isPrimary Boolean  @default(false)
   productId String
-
-  // Relations
-  product   Product  @relation(fields: [productId], references: [id])
   createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id])
 }
 
-// Containing items in a single checkout
 model Order {
-  id          String   @id @default(uuid())
+  id          String      @id @default(uuid())
   userId      String
-  status      String   @default("pending") // "pending", "shipped", "completed", "cancelled"
+  status      String      @default("pending")
   totalAmount Float
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relations
-  user       User        @relation(fields: [userId], references: [id])
-  orderItems OrderItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  user        User        @relation(fields: [userId], references: [id])
+  orderItems  OrderItem[]
 }
 
-// Single item in an Order of one or more products
-// All Cart items may not be included in Order; hence separate OrderItem model
 model OrderItem {
-  id        String @id @default(uuid())
+  id        String  @id @default(uuid())
   orderId   String
   productId String
-  quantity  Int // Number of units purchased
-  price     Float // Price per unit at the time of purchase
-
-  // Relations
-  order   Order   @relation(fields: [orderId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
 }
 
-// Contains items added to the cart by user
 model Cart {
   id        String   @id @default(uuid())
   userId    String
   productId String
   quantity  Int      @default(1)
   addedAt   DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
-  // Relations
-  user    User    @relation(fields: [userId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
-
-  @@unique([productId, userId]) // The composite unique key
+  @@unique([productId, userId])
 }
 
 model Review {
   id        String   @id @default(uuid())
   userId    String
   productId String
-  rating    Int      @default(1) // Rating from 1–5
-  comment   String?  @db.Text
+  rating    Int      @default(1)
+  comment   String?
   createdAt DateTime @default(now())
-
-  // Relations
-  user    User    @relation(fields: [userId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }
