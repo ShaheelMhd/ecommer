@@ -15,7 +15,12 @@ const SearchPage = async ({
   search = search.split("-").join(" ");
 
   let products = await prisma.product.findMany({
-    where: { name: { contains: search, mode: "insensitive" } },
+    where: {
+      OR: [
+        { name: { contains: search, mode: "insensitive" } },
+        { brand: { contains: search, mode: "insensitive" } },
+      ],
+    },
     orderBy: { createdAt: "desc" },
   });
 
@@ -26,7 +31,7 @@ const SearchPage = async ({
     <div>
       <div className="flex justify-between">
         <h1>Results for "{search}"</h1>
-        <Filter />
+        {products.length > 0 && <Filter />}
       </div>
       <div className="grid grid-cols-4 gap-5">
         {products.length > 0 ? (
