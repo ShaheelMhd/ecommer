@@ -1,22 +1,33 @@
+import Filter from "@/components/Filter";
 import ProductCard from "@/components/ProductCard";
+import { titleCase } from "@/lib/titleCase";
 import { prisma } from "@/prisma/client";
-import React from "react";
 
 interface Props {
   params: { search: string };
+  searchParams: { brand?: string };
 }
 
-const SearchPage = async ({ params: { search } }: Props) => {
+const SearchPage = async ({
+  params: { search },
+  searchParams: { brand },
+}: Props) => {
   search = search.split("-").join(" ");
 
-  const products = await prisma.product.findMany({
+  let products = await prisma.product.findMany({
     where: { name: { contains: search, mode: "insensitive" } },
     orderBy: { createdAt: "desc" },
   });
 
+  if (brand)
+    products = products.filter((product) => product.brand === titleCase(brand));
+
   return (
     <div>
-      <h1>Results for "{search}"</h1>
+      <div className="flex justify-between">
+        <h1>Results for "{search}"</h1>
+        <Filter />
+      </div>
       <div className="grid grid-cols-4 gap-3.5">
         {products.length > 0 ? (
           products.map((product) => (

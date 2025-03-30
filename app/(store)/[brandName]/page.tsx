@@ -1,4 +1,5 @@
 import ProductCard from "@/components/ProductCard";
+import { titleCase } from "@/lib/titleCase";
 import { prisma } from "@/prisma/client";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -45,14 +46,6 @@ const BrandPage = async ({ params: { brandName } }: Props) => {
     },
     {}
   );
-
-  function titleCase(string: string) {
-    return string
-      .toLowerCase()
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  }
 
   return (
     <>

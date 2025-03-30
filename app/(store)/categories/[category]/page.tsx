@@ -1,3 +1,4 @@
+import Filter from "@/components/Filter";
 import ProductCard from "@/components/ProductCard";
 import { prisma } from "@/prisma/client";
 import { notFound } from "next/navigation";
@@ -9,7 +10,7 @@ interface Props {
 
 const CategoryPage = async ({ params: { category } }: Props) => {
   const categoryId = await prisma.category.findFirst({
-    where: { id: category },
+    where: { name: category },
     select: { id: true, name: true },
   });
 
@@ -26,10 +27,12 @@ const CategoryPage = async ({ params: { category } }: Props) => {
         <h2>CATEGORIES</h2>
         <h1 className="text-6xl">{categoryId.name.toUpperCase()}</h1>
       </div>
-      {/* <h1 className="capitalize">{categoryId.name}</h1> */}
+      <div className="flex justify-end mb-5">
+        <Filter />
+      </div>
       <div className="grid grid-cols-4 gap-5">
         {products.map((product) => (
-          <ProductCard id={product.id} className="w-[20rem] h-[27rem]" />
+          <ProductCard id={product.id} className="w-[20.3rem] h-[27rem]" />
         ))}
       </div>
     </div>
