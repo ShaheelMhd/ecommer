@@ -9,7 +9,6 @@ import {
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { FaChevronDown } from "react-icons/fa";
-import { GrSearch } from "react-icons/gr";
 import { IoBagOutline } from "react-icons/io5";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { Separator } from "@/components/ui/separator";
@@ -20,7 +19,7 @@ const NavBar = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <div className="grid grid-cols-3 items-center px-10 py-4 text-slate-200 bg-neutral-900">
+    <div className="grid grid-cols-3 items-center px-10 py-4 bg-gray-200 text-neutral-900 dark:bg-black dark:text-stone-200">
       <Link href="/categories">Categories</Link>
       <div className="text-center">
         <Link href="/" className="font-semibold text-2xl">
@@ -32,7 +31,10 @@ const NavBar = async () => {
         <Link href="/cart">
           <IoBagOutline className="size-5" />
         </Link>
-        <Separator orientation="vertical" className="h-4 ml-1 opacity-40" />
+        <Separator
+          orientation="vertical"
+          className="h-4 ml-1 opacity-40 dark dark:bg-white"
+        />
         {session && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

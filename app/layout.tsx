@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.className} antialiased bg-neutral-800 text-slate-200`}
+        className={`${inter.className} antialiased dark:bg-zinc-900 dark:text-slate-200 bg-slate-100 text-neutral-900`}
       >
         <AuthProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

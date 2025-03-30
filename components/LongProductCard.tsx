@@ -37,7 +37,7 @@ const LongProductCard = async ({ id, width, height }: ProductInfo) => {
   if (image.length === 0) return null;
 
   return (
-    <Card>
+    <Card className="dark:bg-neutral-900">
       <div className="flex h-full">
         <CardContent className="pt-6 flex-shrink-0 my-auto">
           <Image
@@ -51,12 +51,16 @@ const LongProductCard = async ({ id, width, height }: ProductInfo) => {
         <div className="flex flex-col justify-between">
           <CardHeader className="pl-0">
             <Link href={`/products/${id}`}>
-              <CardTitle className="line-clamp-2">{product.name}</CardTitle>
+              <CardTitle className="line-clamp-2 dark:text-slate-200">
+                {product.name}
+              </CardTitle>
             </Link>
             <CardDescription className="line-clamp-2">
               {product.description}
             </CardDescription>
-            <h3 className="text-stone-700">${product.price.toLocaleString()}</h3>
+            <h3 className="text-stone-500 dark:text-zinc-400">
+              ${product.price.toLocaleString()}
+            </h3>
           </CardHeader>
           <CardFooter className="grid grid-cols-2 gap-3 pl-0">
             <AddToCartButton productId={product.id} />

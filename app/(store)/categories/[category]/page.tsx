@@ -32,7 +32,7 @@ const CategoryPage = async ({ params: { category } }: Props) => {
       </div>
       <div className="grid grid-cols-4 gap-5">
         {products.map((product) => (
-          <ProductCard id={product.id} className="w-[20.3rem] h-[27rem]" />
+          <ProductCard id={product.id} className="h-[27rem]" /> // w-[20.3rem] if needed
         ))}
       </div>
     </div>

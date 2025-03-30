@@ -8,7 +8,7 @@ interface Props {
 const Footer = ({ className }: Props) => {
   return (
     <div
-      className={`${className} text-slate-200 bg-neutral-900 px-10 py-6 flex justify-between`}
+      className={`${className} bg-gray-200 text-neutral-900 dark:bg-black dark:text-stone-200 px-10 py-6 flex justify-between`}
     >
       <p>Ecommer Inc.</p>
       <p>

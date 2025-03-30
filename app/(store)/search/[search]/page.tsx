@@ -28,13 +28,13 @@ const SearchPage = async ({
         <h1>Results for "{search}"</h1>
         <Filter />
       </div>
-      <div className="grid grid-cols-4 gap-3.5">
+      <div className="grid grid-cols-4 gap-5">
         {products.length > 0 ? (
           products.map((product) => (
             <ProductCard
               id={product.id}
               key={product.id}
-              className="w-[20rem] h-[27rem] mb-3"
+              className="h-[27rem] mb-3" // w-[20.3rem] if needed
             />
           ))
         ) : (

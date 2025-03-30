@@ -16,7 +16,7 @@ interface Props {
   width?: number;
   height?: number;
   // useful for explicitly setting height of the card
-  className?: string; 
+  className?: string;
 }
 
 const ProductCard = async ({ id, width, height, className }: Props) => {
@@ -38,12 +38,16 @@ const ProductCard = async ({ id, width, height, className }: Props) => {
   if (image.length === 0) return null;
 
   return (
-    <Card className={`flex flex-col ${className}`}>
+    <Card className={`flex flex-col ${className} dark:bg-neutral-900`}>
       <CardHeader>
         <Link href={`/products/${id}`}>
-          <CardTitle className="line-clamp-2">{product.name}</CardTitle>
+          <CardTitle className="line-clamp-2 dark:text-slate-200 dark:text-opacity-90">
+            {product.name}
+          </CardTitle>
         </Link>
-        <h3 className="text-stone-500">${product.price.toLocaleString()}</h3>
+        <h3 className="text-stone-500 dark:text-zinc-400">
+          ${product.price.toLocaleString()}
+        </h3>
       </CardHeader>
       <CardContent className="flex-shrink-0 my-auto">
         <Image

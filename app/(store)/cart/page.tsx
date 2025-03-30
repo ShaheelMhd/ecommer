@@ -1,5 +1,7 @@
 "use client";
 
+import QuantitySelector from "@/components/QuantitySelector";
+import RemoveFromCartButton from "@/components/RemoveFromCartButton";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,14 +12,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import React, { useEffect, useState } from "react";
-import QuantitySelector from "@/components/QuantitySelector";
-import Link from "next/link";
-import Image from "next/image";
-import RemoveFromCartButton from "@/components/RemoveFromCartButton";
-import { toast } from "sonner";
-import NumberFlow from "@number-flow/react";
 import { Skeleton } from "@/components/ui/skeleton";
+import NumberFlow from "@number-flow/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface ProductImage {
   productId: string;
@@ -121,7 +121,10 @@ const CartPage = () => {
                 const productImage = cartProduct.product.images[0];
 
                 return (
-                  <Card key={cartProduct.id} className="col-start-1 mb-5">
+                  <Card
+                    key={cartProduct.id}
+                    className="col-start-1 mb-5 dark:bg-neutral-900"
+                  >
                     <div className="flex h-full w-full">
                       <CardContent
                         className="pt-6 flex-shrink-0 my-auto aspect-square 
@@ -138,7 +141,7 @@ const CartPage = () => {
                       <div className="flex flex-col justify-between w-full">
                         <CardHeader className="pl-0">
                           <Link href={`/products/${product.id}`}>
-                            <CardTitle className="line-clamp-2">
+                            <CardTitle className="line-clamp-2 dark:text-slate-200">
                               {product.name}
                             </CardTitle>
                           </Link>
@@ -162,9 +165,11 @@ const CartPage = () => {
               })}
             </section>
             <section>
-              <Card className="flex flex-col max-h-[var(--full-screen-height)] overflow-scroll">
+              <Card className="dark:bg-neutral-900 flex flex-col max-h-[var(--full-screen-height)] overflow-scroll">
                 <CardHeader>
-                  <CardTitle>Cart Summary</CardTitle>
+                  <CardTitle className="dark:text-slate-200">
+                    Cart Summary
+                  </CardTitle>
                   <CardDescription>Your cart at a glance.</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-shrink-0 mb-auto">
@@ -174,8 +179,10 @@ const CartPage = () => {
 
                       return (
                         <div className="flex justify-between gap-3 mb-2.5">
-                          <p className="w-[70%] line-clamp-2">{product.name}</p>
-                          <p className="text-stone-500">
+                          <p className="w-[70%] line-clamp-2 dark:text-slate-200">
+                            {product.name}
+                          </p>
+                          <p className="text-stone-500 dark:text-zinc-400">
                             ${product.price.toLocaleString()} *{" "}
                             {cartProduct.quantity}
                           </p>
@@ -201,7 +208,10 @@ const CartPage = () => {
                   </div>
                 </CardContent>
                 <CardFooter className="align-bottom">
-                  <Button variant="default" className="w-full">
+                  <Button
+                    variant="default"
+                    className="w-full dark:bg-opacity-90"
+                  >
                     Checkout
                   </Button>
                 </CardFooter>
