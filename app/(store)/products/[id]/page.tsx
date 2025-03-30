@@ -51,7 +51,10 @@ const ProductPage = async ({ params: { id } }: Props) => {
     where: {
       id: id,
     },
-    include: { images: { where: { productId: id } }, category: true },
+    include: {
+      images: { where: { productId: id }, orderBy: { isPrimary: "desc" } },
+      category: true,
+    },
   });
 
   if (!product) return notFound();
@@ -81,6 +84,7 @@ const ProductPage = async ({ params: { id } }: Props) => {
 
   return (
     <>
+      {/* NAVBAR (PATH) */}
       <nav className="flex gap-1 items-center">
         <Link
           href="/"
@@ -103,6 +107,8 @@ const ProductPage = async ({ params: { id } }: Props) => {
           {product.category.name}
         </Link>
       </nav>
+
+      {/* MAIN SECTION */}
       <section className="mb-[5rem] grid grid-cols-[3fr_4fr] gap-8 mt-7 min-h-[25rem]">
         {product.images.length === 1 ? (
           <Image
@@ -160,6 +166,8 @@ const ProductPage = async ({ params: { id } }: Props) => {
           </div>
         </div>
       </section>
+
+      {/* DESCRIPTION SECTION */}
       <section id="description" className="mb-[3rem]">
         <h1>Description</h1>
         <TextClamp text={product.description} />
@@ -177,6 +185,8 @@ const ProductPage = async ({ params: { id } }: Props) => {
           </ul>
         </section>
       )}
+
+      {/* REVIEWS SECTION */}
       <section id="reviews" className="mb-[3rem]">
         <h1>Reviews</h1>
         {reviews.length === 0 ? (
@@ -243,6 +253,8 @@ const ProductPage = async ({ params: { id } }: Props) => {
           </>
         )}
       </section>
+
+      {/* SUGGESTED SECTION */}
       <section id="suggested">
         <h1>Suggested for You</h1>
         <div className="overflow-x-auto scrollbar-hidden w-full">

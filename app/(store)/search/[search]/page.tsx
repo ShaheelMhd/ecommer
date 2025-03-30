@@ -10,7 +10,7 @@ const SearchPage = async ({ params: { search } }: Props) => {
   search = search.split("-").join(" ");
 
   const products = await prisma.product.findMany({
-    where: { name: { contains: search } },
+    where: { name: { contains: search, mode: "insensitive" } },
     orderBy: { createdAt: "desc" },
   });
 
