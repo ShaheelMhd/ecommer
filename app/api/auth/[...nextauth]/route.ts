@@ -1,9 +1,9 @@
 import { prisma } from "@/prisma/client";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import bcrypt from "bcrypt";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import bcrypt from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -36,14 +36,19 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  // implement database session over jwt for production
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
   },
-  // pages: {
-  //   signIn: "/signin",
-  // }
+  pages: {
+    signIn: "/signin",
+    // signOut: "/signout"
+  },
+  callbacks: {
+    async redirect({ baseUrl }) {
+      return baseUrl; // baseUrl -> homepage ('/')
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);

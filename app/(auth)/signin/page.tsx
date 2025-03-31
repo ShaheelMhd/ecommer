@@ -1,26 +1,36 @@
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { FaGoogle } from "react-icons/fa";
-import LoginForm from "../SignInForm";
 import { Metadata } from "next";
+import Link from "next/link";
+import GoogleSignIn from "./GoogleSignIn";
+import LoginForm from "./SignInForm";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Sign In - Ecommer",
-    description:
-      "Log in to explore thousands of gadgets and more with Ecommer.",
+    title: "Login - Ecommer",
+    description: "Login to explore thousands of gadgets with Ecommer.",
   };
 }
 
 const SignInPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center gap-5 w-fit">
-      <LoginForm />
-      <Separator className="w-[80%]" />
-      <Button className="p-6 py-7 text-md w-full">
-        <FaGoogle className="mr-1" />
-        Continue with Google
-      </Button>
+    <div className="flex flex-col items-center justify-center">
+      <Card>
+        <CardHeader>
+          <CardTitle>Login</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center gap-5">
+          <LoginForm />
+          <p className="text-sm">
+            Don't have an account?{" "}
+            <Link className=" text-blue-400" href="/register">
+              Register now.
+            </Link>
+          </p>
+          <Separator className="w-[80%]" />
+          <GoogleSignIn />
+        </CardContent>
+      </Card>
     </div>
   );
 };

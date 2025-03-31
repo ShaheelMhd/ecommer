@@ -1,3 +1,4 @@
+import ThemeToggle from "@/components/ThemeToggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,14 +7,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { FaChevronDown } from "react-icons/fa";
 import { IoBagOutline } from "react-icons/io5";
+import SignOutButton from "./(auth)/signout/SignOutButton";
 import { authOptions } from "./api/auth/[...nextauth]/route";
-import { Separator } from "@/components/ui/separator";
 import Search from "./Search";
-import ThemeToggle from "@/components/ThemeToggle";
 
 const NavBar = async () => {
   const session = await getServerSession(authOptions);
@@ -52,9 +53,7 @@ const NavBar = async () => {
               <ThemeToggle />
               <DropdownMenuSeparator className="w-[80%] justify-self-center" />
               <DropdownMenuItem>
-                <Link href="/api/auth/signout" className="w-full">
-                  Sign Out
-                </Link>
+                <SignOutButton />
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
