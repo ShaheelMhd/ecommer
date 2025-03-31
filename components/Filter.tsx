@@ -34,7 +34,7 @@ const Filter = () => {
   });
 
   function onSubmit(data: z.infer<typeof schema>) {
-    router.push(`?brand=${data.brand}`);
+    router.push(`?brand=${data.brand}`, { scroll: false });
   }
 
   function clearFilters() {

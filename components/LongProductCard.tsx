@@ -51,7 +51,7 @@ const LongProductCard = async ({ id, width, height }: ProductInfo) => {
         <div className="flex flex-col justify-between">
           <CardHeader className="pl-0">
             <Link href={`/products/${id}`}>
-              <CardTitle className="line-clamp-2 dark:text-slate-200">
+              <CardTitle className="line-clamp-2 dark:text-slate-200 dark:text-opacity-90">
                 {product.name}
               </CardTitle>
             </Link>
