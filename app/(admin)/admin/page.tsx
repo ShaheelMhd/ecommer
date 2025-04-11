@@ -1,6 +1,6 @@
 import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
-import AdminCard from "../AdminCard";
+import AdminCard from "../components/AdminCard";
 import { IoAddCircle } from "react-icons/io5";
 import { FaUsers } from "react-icons/fa6";
 import { PiWrenchFill } from "react-icons/pi";
@@ -8,7 +8,11 @@ import { IoExitOutline } from "react-icons/io5";
 
 const items = [
   { title: "Add Products", href: "/admin/products/add", Icon: IoAddCircle },
-  { title: "Manage Products", href: "/admin/products/manage", Icon: PiWrenchFill },
+  {
+    title: "Manage Products",
+    href: "/admin/products/manage",
+    Icon: PiWrenchFill,
+  },
   { title: "Manage Users", href: "/admin/users/manage", Icon: FaUsers },
   { title: "Quit", href: "/", Icon: IoExitOutline },
 ];

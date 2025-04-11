@@ -12,9 +12,9 @@ import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { FaChevronDown } from "react-icons/fa";
-import SignOutButton from "../(auth)/signout/SignOutButton";
-import { authOptions } from "../api/auth/[...nextauth]/route";
-import Search from "../Search";
+import SignOutButton from "../../(auth)/signout/SignOutButton";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
+import Search from "../../Search";
 
 const NavBar = async () => {
   const session = await getServerSession(authOptions);
