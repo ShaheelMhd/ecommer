@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
     data: {
       name: body.name,
       description: body.description,
+      brand: body.brand,
       specs: body.specs,
       price: body.price,
       stock: body.stock,
@@ -29,5 +30,5 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  return NextResponse.json(product, { status: 200 });
+  return NextResponse.json(product.id, { status: 200 });
 }

@@ -8,16 +8,28 @@ export const categorySchema = z.object({
 export const productSchema = z.object({
   name: z.string().min(3),
   description: z.string().max(2000),
-  // make brand name required in the specs
+  brand: z.string().max(100),
   specs: z
     .record(z.union([z.string(), z.number(), z.array(z.string())]))
+    .nullable()
     .optional(),
-  price: z.number(),
-  stock: z.number(),
+  price: z.coerce.number().min(1),
+  stock: z.coerce.number().min(1),
   category: z.string().max(191),
 });
 
 export const imageSchema = z.object({
+  image: z
+    .instanceof(File)
+    .refine(
+      (file) =>
+        ["image/png", "image/jpeg", "image/jpg", "image/webp"].includes(
+          file.type
+        ),
+      { message: "Invalid image file type." }
+    )
+    .optional()
+    .nullable(),
   path: z.string().max(255),
   alt: z.string().max(255),
   isPrimary: z.boolean().optional(),
@@ -48,9 +60,6 @@ export const userSchema = z
   });
 
 export const cartSchema = z.object({
-  // no need to check because the userId is derived from backend
-  // and not sent by the user in the api
-  // userId: z.string().max(191),
   productId: z.string().max(191),
   quantity: z.number().max(100).default(1),
 });

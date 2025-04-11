@@ -20,14 +20,14 @@ export async function POST(request: NextRequest) {
   const primaryImage = existingImages.find((img) => img.isPrimary);
 
   // if primary exists, set current image as non-primary
-    const image = await prisma.productImage.create({
-        data: {
-        path: body.path,
-        alt: body.alt,
-        isPrimary: (!existingImages ? true : primaryImage ? false : true),
-        productId: body.productId,
-        },
-    });
+  const image = await prisma.productImage.create({
+    data: {
+      path: body.path,
+      alt: body.alt,
+      isPrimary: !existingImages ? true : primaryImage ? false : true,
+      productId: body.productId,
+    },
+  });
 
   return NextResponse.json(image, { status: 200 });
 }

@@ -1,6 +1,5 @@
 import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
-import AdminNavBar from "../AdminNavBar";
 import AdminCard from "../AdminCard";
 import { IoAddCircle } from "react-icons/io5";
 import { FaUsers } from "react-icons/fa6";
