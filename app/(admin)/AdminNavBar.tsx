@@ -8,14 +8,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
+import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { FaChevronDown } from "react-icons/fa";
-import { IoBagOutline } from "react-icons/io5";
-import SignOutButton from "./(auth)/signout/SignOutButton";
-import { authOptions } from "./api/auth/[...nextauth]/route";
-import Search from "./Search";
-import { prisma } from "@/prisma/client";
+import SignOutButton from "../(auth)/signout/SignOutButton";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import Search from "../Search";
 
 const NavBar = async () => {
   const session = await getServerSession(authOptions);
@@ -25,18 +24,15 @@ const NavBar = async () => {
   });
 
   return (
-    <div className="grid grid-cols-3 items-center px-10 py-4 bg-gray-200 text-neutral-900 dark:bg-black dark:text-stone-200">
-      <Link href="/categories">Categories</Link>
-      <div className="text-center">
-        <Link href="/" className="font-semibold text-2xl">
+    <div className="w-dvw grid grid-cols-2 items-center px-10 py-4 bg-gray-200 text-neutral-900 dark:bg-black dark:text-stone-200">
+      <div className="inline-flex items-center gap-4">
+        <Link href="/admin" className="font-semibold text-2xl">
           ECOMMER
         </Link>
+        <p>(ADMIN PANEL)</p>
       </div>
       <div className="justify-self-end flex items-center gap-4">
         <Search />
-        <Link href="/cart">
-          <IoBagOutline className="size-5" />
-        </Link>
         <Separator
           orientation="vertical"
           className="h-4 ml-1 opacity-40 dark dark:bg-white"
