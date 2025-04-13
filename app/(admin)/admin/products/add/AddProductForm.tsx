@@ -15,21 +15,27 @@ import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/lib/supabaseClient";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-const ProductForm = () => {
+const AddProductForm = () => {
   const productForm = useForm<z.infer<typeof productSchema>>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       name: "",
       description: "",
+      specsArray: [{ key: "", value: "" }],
       brand: "",
       price: 0,
       stock: 1,
       category: "",
     },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: productForm.control,
+    name: "specsArray", // This binds to the field array in the form
   });
 
   const imageForm = useForm<z.infer<typeof imageSchema>>({
@@ -45,6 +51,13 @@ const ProductForm = () => {
 
   async function onProductSubmit(values: z.infer<typeof productSchema>) {
     try {
+      const specsObject: Record<string, string> = {};
+      values.specsArray?.forEach(({ key, value }) => {
+        if (key.trim()) {
+          specsObject[key.trim()] = value.trim();
+        }
+      });
+
       const response = await fetch("/api/products/register", {
         method: "POST",
         headers: {
@@ -54,7 +67,7 @@ const ProductForm = () => {
           name: values.name,
           description: values.description,
           brand: values.brand,
-          specs: values.specs,
+          specs: specsObject,
           price: values.price,
           stock: values.stock,
           category: values.category,
@@ -161,6 +174,75 @@ const ProductForm = () => {
                   </FormItem>
                 )}
               />
+
+              <FormLabel>Specs</FormLabel>
+              {fields.map((field, index) => (
+                <div
+                  key={field.id}
+                  className="grid grid-cols-[1fr_2fr_auto] gap-3"
+                >
+                  {/* Key Input */}
+                  <FormField
+                    control={productForm.control}
+                    name={`specsArray.${index}.key`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="text"
+                            placeholder="Enter the key"
+                            className="h-12"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Value Input */}
+                  <FormField
+                    control={productForm.control}
+                    name={`specsArray.${index}.value`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="text"
+                            placeholder="Enter the value"
+                            className="h-12"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Remove button */}
+                  {fields.length > 1 && (
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      onClick={() => remove(index)}
+                      className="h-full"
+                    >
+                      Remove
+                    </Button>
+                  )}
+                </div>
+              ))}
+
+              {/* Add More Specs Button */}
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => append({ key: "", value: "" })}
+                className="h-12 col-span-3"
+              >
+                Add Spec
+              </Button>
+
               <FormField
                 control={productForm.control}
                 name="brand"
@@ -242,7 +324,7 @@ const ProductForm = () => {
               >
                 {productForm.formState.isSubmitting
                   ? "Submitting..."
-                  : "Submit"}
+                  : "Continue"}
               </Button>
             </form>
           </Form>
@@ -337,4 +419,4 @@ const ProductForm = () => {
   );
 };
 
-export default ProductForm;
+export default AddProductForm;

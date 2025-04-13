@@ -1,10 +1,10 @@
-import ProductForm from "./ProductForm";
+import AddProductForm from "./AddProductForm";
 
 const ProductAddPage = () => {
   return (
     <>
       <h1>Add a Product</h1>
-      <ProductForm />
+      <AddProductForm />
     </>
   );
 };

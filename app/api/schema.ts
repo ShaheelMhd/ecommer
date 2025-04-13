@@ -16,6 +16,14 @@ export const productSchema = z.object({
   price: z.coerce.number().min(1),
   stock: z.coerce.number().min(1),
   category: z.string().max(191),
+  specsArray: z
+    .array(
+      z.object({
+        key: z.string().min(1),
+        value: z.string().min(1),
+      })
+    )
+    .optional(),
 });
 
 export const imageSchema = z.object({
