@@ -52,7 +52,9 @@ const NavBar = async () => {
             <DropdownMenuContent className="w-60" align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuItem>Preferences</DropdownMenuItem>
-              <DropdownMenuItem>Your Orders</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="/orders">Your Orders</Link>
+              </DropdownMenuItem>
               {user?.role === "admin" && (
                 <DropdownMenuItem>
                   <Link href="/admin">Admin Panel</Link>
