@@ -1,5 +1,6 @@
 "use client";
 
+import CheckoutButton from "@/components/CheckoutButton";
 import QuantitySelector from "@/components/QuantitySelector";
 import RemoveFromCartButton from "@/components/RemoveFromCartButton";
 import { Button } from "@/components/ui/button";
@@ -208,12 +209,7 @@ const CartPage = () => {
                   </div>
                 </CardContent>
                 <CardFooter className="align-bottom">
-                  <Button
-                    variant="default"
-                    className="w-full dark:bg-opacity-90"
-                  >
-                    Checkout
-                  </Button>
+                  <CheckoutButton />
                 </CardFooter>
               </Card>
             </section>
