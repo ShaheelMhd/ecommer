@@ -51,7 +51,9 @@ const NavBar = async () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-60" align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuItem>Preferences</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="/profile">Your Profile</Link>
+              </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link href="/orders">Your Orders</Link>
               </DropdownMenuItem>
