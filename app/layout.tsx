@@ -1,9 +1,10 @@
+import { ThemeProvider } from "@/components/ThemeProvider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import AuthProvider from "./auth/Provider";
 import "./globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,7 +29,10 @@ export default function RootLayout({
       >
         <AuthProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <main>{children}</main>
+            <main>
+              {children}
+              <SpeedInsights />
+            </main>
             <Toaster className="mr-2" duration={2000} />
           </ThemeProvider>
         </AuthProvider>
