@@ -3,16 +3,12 @@ import { prisma } from "@/prisma/client";
 import Link from "next/link";
 import { Metadata } from "next/types";
 
-interface Props {
-  searchParams: { category: string };
-}
-
 export const metadata: Metadata = {
   title: "Categories - Ecommer",
   description: "Explore the categories of products.",
 };
 
-const CategoriesPage = async ({ searchParams: { category } }: Props) => {
+const CategoriesPage = async () => {
   const categories = await prisma.category.findMany({
     select: { id: true, name: true },
     orderBy: { name: "asc" },
@@ -42,7 +38,7 @@ const CategoriesPage = async ({ searchParams: { category } }: Props) => {
               <div className="flex max-sm:gap-1 gap-6 w-max">
                 {products.map((product) =>
                   product.categoryId === category.id ? (
-                    <div className="flex-shrink-0">
+                    <div key={product.id} className="flex-shrink-0">
                       <ProductCard
                         key={product.id}
                         id={product.id}

@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import GoToCartButton from "./ViewCartButton";
 
 // productId from ProductCard -- already made a prisma call there
 interface Props {

@@ -13,7 +13,7 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { FaChevronDown } from "react-icons/fa";
 import SignOutButton from "../../(auth)/signout/SignOutButton";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/authOptions";
 import Search from "../../Search";
 
 const NavBar = async () => {

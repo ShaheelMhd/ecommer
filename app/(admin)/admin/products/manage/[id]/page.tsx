@@ -2,13 +2,31 @@ import DeleteProductButton from "@/app/(admin)/components/DeleteProductButton";
 import { prisma } from "@/prisma/client";
 import { notFound } from "next/navigation";
 import ManageProductForm from "./ManageProductForm";
+import { JsonValue } from "@prisma/client/runtime/library";
 
 interface Props {
   params: { id: string };
 }
 
+type Product = {
+  category: {
+    name: string;
+  };
+} & {
+  id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  description: string;
+  specs: JsonValue | object | null;
+  brand: string;
+  price: number;
+  stock: number;
+  categoryId: string;
+} | null;
+
 const ManageProductPage = async ({ params: { id } }: Props) => {
-  const product = await prisma.product.findUnique({
+  const product: Product = await prisma.product.findUnique({
     where: { id },
     include: { category: { select: { name: true } } },
   });

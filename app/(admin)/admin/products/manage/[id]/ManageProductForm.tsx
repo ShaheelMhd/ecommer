@@ -22,8 +22,9 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/lib/supabaseClient";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { JsonValue } from "@prisma/client/runtime/library";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -33,7 +34,7 @@ interface Props {
     name: string;
     description: string;
     brand: string;
-    specs: Object | null;
+    specs: JsonValue | object | null;
     price: number;
     stock: number;
     id: string;
@@ -117,7 +118,7 @@ const ManageProductForm = ({ product }: Props) => {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState<File | null>(null);
 
-  const fetchImages = async () => {
+  const fetchImages = useCallback(async () => {
     try {
       const response = await fetch(`/api/images?productId=${product?.id}`);
       const data = await response.json();
@@ -127,11 +128,11 @@ const ManageProductForm = ({ product }: Props) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [product?.id]);
 
   useEffect(() => {
     fetchImages();
-  }, [product?.id]);
+  }, [fetchImages]);
 
   const imageForm = useForm<z.infer<typeof imageSchema>>({
     resolver: zodResolver(imageSchema),
@@ -420,7 +421,7 @@ const ManageProductForm = ({ product }: Props) => {
                   <TableCell colSpan={4}>No product images found.</TableCell>
                 </TableRow>
               ) : (
-                productImages.map((image: any) => (
+                productImages.map((image: image) => (
                   <TableRow key={image.id}>
                     <TableCell>{image.isPrimary ? "Yes" : "No"}</TableCell>
                     <TableCell>

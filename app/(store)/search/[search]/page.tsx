@@ -49,7 +49,7 @@ const SearchPage = async ({
   return (
     <div>
       <div className="flex max-sm:flex-col justify-between mb-2">
-        <h1>Results for "{search}"</h1>
+        <h1>Results for &quot;{search}&quot;</h1>
         <div
           className="flex max-sm:justify-end max-sm:mb-5 max-sm:mr-2
         items-center gap-2"

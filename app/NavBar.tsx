@@ -8,14 +8,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
+import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { FaChevronDown } from "react-icons/fa";
 import { IoBagOutline } from "react-icons/io5";
 import SignOutButton from "./(auth)/signout/SignOutButton";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "./api/auth/authOptions";
 import Search from "./Search";
-import { prisma } from "@/prisma/client";
 
 const NavBar = async () => {
   const session = await getServerSession(authOptions);

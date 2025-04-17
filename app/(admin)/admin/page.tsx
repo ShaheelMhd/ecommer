@@ -44,7 +44,12 @@ const AdminPage = async () => {
           lg:grid-cols-3 xl:grid-cols-4 max-sm:gap-1 gap-3"
         >
           {items.map((item) => (
-            <AdminCard title={item.title} href={item.href} Icon={item.Icon} />
+            <AdminCard
+              key={item.title}
+              title={item.title}
+              href={item.href}
+              Icon={item.Icon}
+            />
           ))}
         </div>
       </div>

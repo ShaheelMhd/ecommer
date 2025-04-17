@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/authOptions";
 import AddToCartButton from "@/components/AddToCartButton";
 import DeleteReviewButton from "@/components/DeleteReviewButton";
 import ImageCarousel from "@/components/ImageCarousel";

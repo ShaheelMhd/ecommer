@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
-import { reviewSchema } from "../schema";
 import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { authOptions } from "../auth/authOptions";
+import { reviewSchema } from "../schema";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();

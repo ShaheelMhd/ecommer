@@ -24,6 +24,7 @@ const DeleteReviewButton = ({ productId }: Props) => {
       if (!response.ok) throw new Error("Failed to delete review!");
     } catch (error) {
       toast.error("Failed to delete review!");
+      console.error(error);
     }
   };
 

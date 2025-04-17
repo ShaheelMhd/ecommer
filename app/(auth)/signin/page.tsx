@@ -25,7 +25,7 @@ const SignInPage = () => {
         <CardContent className="flex flex-col items-center gap-5 w-full">
           <LoginForm />
           <p className="text-sm">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link className=" text-blue-400" href="/register">
               Register now.
             </Link>

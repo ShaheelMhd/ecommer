@@ -1,6 +1,6 @@
 import DeleteUserButton from "@/app/(admin)/components/DeleteUserButton";
 import ManageUserButton from "@/app/(admin)/components/ManageUserButton";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/authOptions";
 import {
   Table,
   TableBody,

@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/authOptions";
 import OrderItemCard from "@/components/OrderItemCard";
 import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
@@ -25,7 +25,7 @@ const OrdersPage = async () => {
     <div>
       <h1 className="mb-5">Your Orders</h1>
       {order.map((item) => (
-        <div className="mb-7">
+        <div key={item.id} className="mb-7">
           <div className="mb-3 flex justify-between align-middle">
             <h2>
               {(() => {

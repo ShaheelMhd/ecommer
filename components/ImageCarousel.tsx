@@ -31,7 +31,7 @@ const ImageCarousel = ({ images, className }: Props) => {
       >
         <CarouselContent>
           {images.map((image) => (
-            <CarouselItem id={image.id}>
+            <CarouselItem key={image.id} id={image.id}>
               <Image
                 id={image.id}
                 src={image.path}

@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import { cartSchema } from "../schema";
 import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "../auth/authOptions";
+import { cartSchema } from "../schema";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session)
     return NextResponse.json(
@@ -84,7 +84,7 @@ export async function DELETE(request: NextRequest) {
     );
 
   const user = await prisma.user.findUnique({
-    where: { email: session.user?.email! },
+    where: { email: session.user?.email ?? "" },
   });
 
   if (!user) {

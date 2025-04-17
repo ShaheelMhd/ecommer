@@ -16,7 +16,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import NumberFlow from "@number-flow/react";
 import Image from "next/image";
 import Link from "next/link";
-import { Metadata } from "next/types";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -49,11 +48,6 @@ interface Cart {
   addedAt: Date;
   product: Product;
 }
-
-export const metadata: Metadata = {
-  title: "Your Cart - Ecommer",
-  description: "View and manage your cart.",
-};
 
 const CartPage = () => {
   const [cart, setCart] = useState<Cart[]>([]);
@@ -196,7 +190,10 @@ const CartPage = () => {
                       const product = cartProduct.product;
 
                       return (
-                        <div className="flex justify-between gap-3 mb-2.5">
+                        <div
+                          key={product.id}
+                          className="flex justify-between gap-3 mb-2.5"
+                        >
                           <p className="w-[70%] line-clamp-2 dark:text-slate-200">
                             {product.name}
                           </p>
