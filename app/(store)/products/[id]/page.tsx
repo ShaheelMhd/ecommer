@@ -135,7 +135,10 @@ const ProductPage = async ({ params: { id } }: Props) => {
             <ImageCarousel images={product.images} />
           </div>
         )}
-        <div className="lg:col-start-2 lg:pr-10 flex flex-col lg:justify-between">
+        <div
+          className="lg:col-start-2 lg:pr-10 flex flex-col lg:justify-between
+        lg:h-full"
+        >
           <div>
             <Link
               href={`/brands/${product.brand}`}
