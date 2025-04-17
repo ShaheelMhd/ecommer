@@ -1,11 +1,11 @@
 import { authOptions } from "@/app/api/auth/authOptions";
 import AddToCartButton from "@/components/AddToCartButton";
+import BuyNowButton from "@/components/BuyNowButton";
 import DeleteReviewButton from "@/components/DeleteReviewButton";
 import ImageCarousel from "@/components/ImageCarousel";
 import ProductCard from "@/components/ProductCard";
 import StarRating from "@/components/StarRating";
 import TextClamp from "@/components/TextClamp";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
   Table,
@@ -174,9 +174,7 @@ const ProductPage = async ({ params: { id } }: Props) => {
             ) : (
               <AddToCartButton className="w-[50%]" productId={id} />
             )}
-            <Button className="w-[50%]" variant="default">
-              Buy Now
-            </Button>
+            <BuyNowButton productId={id} />
           </div>
         </div>
       </section>
