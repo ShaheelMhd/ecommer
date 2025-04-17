@@ -11,6 +11,12 @@ import {
 } from "@/components/ui/table";
 import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Manage Users - Ecommer",
+  description: "Manage users on the platform.",
+};
 
 const UsersManagePage = async () => {
   const session = await getServerSession(authOptions);

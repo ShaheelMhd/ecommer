@@ -4,6 +4,7 @@ import ViewToggle from "@/components/ViewToggle";
 import { titleCase } from "@/lib/titleCase";
 import { prisma } from "@/prisma/client";
 import { notFound } from "next/navigation";
+import { Metadata } from "next/types";
 import React from "react";
 
 interface Props {
@@ -19,6 +20,11 @@ type Product = {
   category: {
     name: string;
   };
+};
+
+export const metadata: Metadata = {
+  title: "Brand Store - Ecommer",
+  description: "Explore all the products from a brand.",
 };
 
 const BrandPage = async ({

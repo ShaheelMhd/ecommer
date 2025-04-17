@@ -1,5 +1,11 @@
 import ManageProductCard from "@/app/(admin)/components/ManageProductCard";
 import { prisma } from "@/prisma/client";
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Manage Products - Ecommer",
+  description: "Manage the products in the store.",
+};
 
 const ManageProductsHomePage = async () => {
   const products = await prisma.product.findMany({

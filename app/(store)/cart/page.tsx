@@ -3,7 +3,6 @@
 import CheckoutButton from "@/components/CheckoutButton";
 import QuantitySelector from "@/components/QuantitySelector";
 import RemoveFromCartButton from "@/components/RemoveFromCartButton";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -17,6 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import NumberFlow from "@number-flow/react";
 import Image from "next/image";
 import Link from "next/link";
+import { Metadata } from "next/types";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -49,6 +49,11 @@ interface Cart {
   addedAt: Date;
   product: Product;
 }
+
+export const metadata: Metadata = {
+  title: "Your Cart - Ecommer",
+  description: "View and manage your cart.",
+};
 
 const CartPage = () => {
   const [cart, setCart] = useState<Cart[]>([]);

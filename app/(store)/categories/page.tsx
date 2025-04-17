@@ -1,10 +1,16 @@
 import ProductCard from "@/components/ProductCard";
 import { prisma } from "@/prisma/client";
 import Link from "next/link";
+import { Metadata } from "next/types";
 
 interface Props {
   searchParams: { category: string };
 }
+
+export const metadata: Metadata = {
+  title: "Categories - Ecommer",
+  description: "Explore the categories of products.",
+};
 
 const CategoriesPage = async ({ searchParams: { category } }: Props) => {
   const categories = await prisma.category.findMany({

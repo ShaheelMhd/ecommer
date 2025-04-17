@@ -1,9 +1,7 @@
-import { Button } from "@/components/ui/button";
+import DeleteProductButton from "@/app/(admin)/components/DeleteProductButton";
 import { prisma } from "@/prisma/client";
 import { notFound } from "next/navigation";
 import ManageProductForm from "./ManageProductForm";
-import { toast } from "sonner";
-import DeleteProductButton from "@/app/(admin)/components/DeleteProductButton";
 
 interface Props {
   params: { id: string };

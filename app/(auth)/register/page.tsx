@@ -1,6 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import RegisterForm from "./RegisterForm";
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Sign Up - Ecommer",
+  description: "Create an account to get the most out of Ecommer.",
+};
 
 const RegisterPage = () => {
   return (

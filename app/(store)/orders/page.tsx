@@ -2,6 +2,12 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import OrderItemCard from "@/components/OrderItemCard";
 import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Your Orders - Ecommer",
+  description: "Manage your orders.",
+};
 
 const OrdersPage = async () => {
   const session = await getServerSession(authOptions);

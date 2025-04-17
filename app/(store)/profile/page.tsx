@@ -2,7 +2,12 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
-import React from "react";
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Your Profile - Ecommer",
+  description: "Manage your profile.",
+};
 
 const ProfilePage = async () => {
   const session = await getServerSession(authOptions);

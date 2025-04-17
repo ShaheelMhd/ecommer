@@ -6,7 +6,6 @@ import ViewToggle from "@/components/ViewToggle";
 import { titleCase } from "@/lib/titleCase";
 import { prisma } from "@/prisma/client";
 import { notFound } from "next/navigation";
-import React from "react";
 
 interface Props {
   params: { category: string };

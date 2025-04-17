@@ -5,10 +5,26 @@ import { Separator } from "@/components/ui/separator";
 import ViewToggle from "@/components/ViewToggle";
 import { titleCase } from "@/lib/titleCase";
 import { prisma } from "@/prisma/client";
+import type { Metadata } from "next";
 
 interface Props {
   params: { search: string };
   searchParams: { brand?: string; view?: "grid" | "list" };
+}
+
+export async function generateMetadata({
+  params: { search },
+}: Props): Promise<Metadata> {
+  if (search)
+    return {
+      title: "Search: " + search + " - Ecommer",
+      description: "Search results for " + search,
+    };
+  else
+    return {
+      title: "Search not found - Ecommer",
+      description: "Oops! We couldn't find your search.",
+    };
 }
 
 const SearchPage = async ({
