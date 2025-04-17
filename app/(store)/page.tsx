@@ -1,5 +1,4 @@
 import ProductCard from "@/components/ProductCard";
-import LongProductCard from "@/components/LongProductCard";
 import { prisma } from "@/prisma/client";
 
 export default async function Home() {
@@ -27,13 +26,6 @@ export default async function Home() {
           </div>
         </div>
       ))}
-
-      <h1>Long Product Card</h1>
-      <div className="grid max-lg:grid-cols-1 grid-cols-2 max-sm:gap-1 gap-3">
-        {products.map((product) => (
-          <LongProductCard key={product.id} id={product.id} />
-        ))}
-      </div>
     </div>
   );
 }
