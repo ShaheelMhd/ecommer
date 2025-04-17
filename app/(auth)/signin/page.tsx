@@ -14,12 +14,15 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const SignInPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center">
-      <Card>
+    <div
+      className="sm:w-[85%] md:w-[65%] lg:w-[55%] xl:w-[40%]
+    flex flex-col items-center justify-center"
+    >
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>Login</CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-col items-center gap-5">
+        <CardContent className="flex flex-col items-center gap-5 w-full">
           <LoginForm />
           <p className="text-sm">
             Don't have an account?{" "}

@@ -34,9 +34,11 @@ const CategoryPage = async ({
 
   return (
     <div>
-      <div className="mb-10 flex flex-col items-center">
-        <h2>CATEGORIES</h2>
-        <h1 className="text-6xl">{categoryId.name.toUpperCase()}</h1>
+      <div className="max-sm:mb-5 mb-10 flex flex-col items-center">
+        <h2 className="max-sm:text-lg/5">CATEGORIES</h2>
+        <h1 className="max-sm:text-5xl text-6xl text-center">
+          {categoryId.name.toUpperCase()}
+        </h1>
       </div>
       <div className="flex justify-end items-center mr-1 mb-5 gap-2">
         <ViewToggle />
@@ -45,19 +47,22 @@ const CategoryPage = async ({
       </div>
 
       {(!view || view === "grid") && (
-        <div className="grid grid-cols-4 gap-5">
+        <div
+          className="grid sm:grid-cols-2 md:grid-cols-2
+          lg:grid-cols-3 xl:grid-cols-4 max-sm:gap-1 gap-5"
+        >
           {products.map((product) => (
             <ProductCard
               key={product.id}
               id={product.id}
-              className="h-[27rem]" // w-[20.3rem] if needed
+              className="md:h-[27rem]"
             />
           ))}
         </div>
       )}
 
       {view === "list" && (
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid max-lg:grid-cols-1 grid-cols-2 max-sm:gap-1 gap-5">
           {products.map((product) => (
             <LongProductCard key={product.id} id={product.id} />
           ))}

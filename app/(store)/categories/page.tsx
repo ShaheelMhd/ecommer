@@ -15,28 +15,33 @@ const CategoriesPage = async ({ searchParams: { category } }: Props) => {
 
   return (
     <>
-      <h1 className="text-6xl mb-10 justify-self-center">CATEGORIES</h1>
+      <h1 className="max-sm:text-5xl text-6xl mb-10 justify-self-center">
+        CATEGORIES
+      </h1>
       <div>
         {categories.map((category) => (
           <div key={category.name} className="mb-10">
-            <div className="flex align-middle items-center gap-3 mb-5">
-              <h1 className="capitalize mb-0">{category.name}</h1>
+            <div className="flex align-middle items-center gap-3 max-sm:mb-0 mb-5">
+              <h1 className="capitalize mb-0 max-sm:text-3xl/5 max-sm:mb-7">
+                {category.name}
+              </h1>
               <Link
                 href={`/categories/${category.name}`}
-                className="text-blue-400 mt-1"
+                className="text-blue-400 max-sm:mb-6 md:mt-1"
               >
                 View All
               </Link>
             </div>
             <div className="overflow-x-auto scrollbar-hidden w-full">
-              <div className="flex gap-6 w-max">
+              <div className="flex max-sm:gap-1 gap-6 w-max">
                 {products.map((product) =>
                   product.categoryId === category.id ? (
                     <div className="flex-shrink-0">
                       <ProductCard
                         key={product.id}
                         id={product.id}
-                        className="w-[20rem] h-[27rem]"
+                        className="max-sm:w-[11.125rem] w-[20rem] max-sm:h-[16.25rem]
+                        h-[27rem]"
                       />
                     </div>
                   ) : null

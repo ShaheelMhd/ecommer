@@ -43,7 +43,7 @@ const Filter = () => {
     router.replace(`${window.location.pathname}?${params.toString()}`, {
       scroll: false,
     });
-    form.reset();
+    form.reset({ brand: "" });
   }
 
   return (

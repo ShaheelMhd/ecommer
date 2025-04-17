@@ -7,6 +7,14 @@ import StarRating from "@/components/StarRating";
 import TextClamp from "@/components/TextClamp";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import UserReview from "@/components/UserReview";
 import ViewCartButton from "@/components/ViewCartButton";
 import { prisma } from "@/prisma/client";
@@ -109,7 +117,10 @@ const ProductPage = async ({ params: { id } }: Props) => {
       </nav>
 
       {/* MAIN SECTION */}
-      <section className="mb-[5rem] grid grid-cols-[3fr_4fr] gap-8 mt-7 min-h-[25rem]">
+      <section
+        className="lg:mb-[5rem] sm:mb-[3.5rem] lg:grid lg:grid-cols-[3fr_4fr]
+        sm:flex sm:flex-col sm:items-center lg:gap-8 sm:gap-5 mt-7 min-h-[25rem]"
+      >
         {product.images.length === 1 ? (
           <Image
             key={product.images[0].id}
@@ -120,11 +131,11 @@ const ProductPage = async ({ params: { id } }: Props) => {
             className="justify-self-center my-auto"
           />
         ) : (
-          <div className="w-[85%] justify-self-center">
+          <div className="lg:w-[85%] sm:w-[75%] justify-self-center">
             <ImageCarousel images={product.images} />
           </div>
         )}
-        <div className="col-start-2 pr-10 flex flex-col justify-between">
+        <div className="lg:col-start-2 lg:pr-10 flex flex-col lg:justify-between">
           <div>
             <Link
               href={`/brands/${product.brand}`}
@@ -142,9 +153,9 @@ const ProductPage = async ({ params: { id } }: Props) => {
                 <>
                   <StarRating rating={totalRating} />
                   {reviews.length === 1 ? (
-                    <p className="opacity-85">{`${totalRating}/5 from ${reviews.length} rating`}</p>
+                    <p className="opacity-85 max-sm:text-sm">{`${totalRating}/5 from ${reviews.length} rating`}</p>
                   ) : (
-                    <p className="opacity-85">{`${totalRating}/5 from ${reviews.length} ratings`}</p>
+                    <p className="opacity-85 max-sm:text-sm">{`${totalRating}/5 from ${reviews.length} ratings`}</p>
                   )}
                 </>
               ) : (
@@ -152,7 +163,7 @@ const ProductPage = async ({ params: { id } }: Props) => {
               )}
             </span>
           </div>
-          <div className="mt-6 flex justify-center gap-3">
+          <div className="mt-6 flex justify-center lg:gap-3 sm:gap-1">
             {(await prisma.cart.findFirst({
               where: { productId: id, userId: user?.id },
             })) ? (
@@ -167,30 +178,40 @@ const ProductPage = async ({ params: { id } }: Props) => {
         </div>
       </section>
 
-      {/* DESCRIPTION SECTION */}
+      {/* INFO SECTION */}
       <section id="description" className="mb-[3rem]">
-        <h1>Description</h1>
+        <h1 className="max-sm:text-3xl/5">Description</h1>
         <TextClamp text={product.description} />
       </section>
+
+      {/* SPECS SECTION */}
       {product.specs && (
         <section id="specs" className="mb-[3rem]">
-          <h1>Specifications</h1>
-          <ul>
-            {Object.entries(product.specs!).map(([key, value]) => (
-              <span className="grid grid-cols-[1fr_5fr] mb-1.5" key={key}>
-                <p className="font-bold uppercase">{key}</p>
-                <p>{value}</p>
-              </span>
-            ))}
-          </ul>
+          <h1 className="max-sm:text-3xl/5">Specifications</h1>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Spec</TableHead>
+                <TableHead>Info</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {Object.entries(product.specs!).map(([key, value]) => (
+                <TableRow key={key}>
+                  <TableCell>{key}</TableCell>
+                  <TableCell>{value}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </section>
       )}
 
       {/* REVIEWS SECTION */}
       <section id="reviews" className="mb-[3rem]">
-        <h1>Reviews</h1>
+        <h1 className="max-sm:text-3xl/5">Reviews</h1>
         {reviews.length === 0 ? (
-          <div>
+          <div className="mt-3 flex flex-col items-center">
             <h3>No reviews yet!</h3>
             {boughtBefore && (
               <div className="mt-3">
@@ -207,8 +228,8 @@ const ProductPage = async ({ params: { id } }: Props) => {
                 .filter((review) => review.userId === user!.id)
                 .map((review) => (
                   <div key={review.id}>
-                    <span className="flex justify-between">
-                      <h2>You</h2>
+                    <span className="flex justify-between items-center">
+                      <h2 className="max-sm:text-xl">You</h2>
                       <DeleteReviewButton productId={id} />
                     </span>
                     <span className="flex gap-2 items-center mb-2">
@@ -234,7 +255,7 @@ const ProductPage = async ({ params: { id } }: Props) => {
                   {reviews.length > 1 ? (
                     <Separator className="my-5 opacity-65 w-[80%] justify-self-center" />
                   ) : null}
-                  <h2>{review.user.name}</h2>
+                  <h2 className="max-sm:text-xl">{review.user.name}</h2>
                   <span className="flex gap-2 items-center mb-2">
                     <StarRating rating={review.rating} />
                     <p>{`(${review.rating}/5)`}</p>
@@ -258,14 +279,14 @@ const ProductPage = async ({ params: { id } }: Props) => {
       <section id="suggested">
         <h1>Suggested for You</h1>
         <div className="overflow-x-auto scrollbar-hidden w-full">
-          <div className="flex gap-3.5 w-max">
+          <div className="flex md:gap-3.5 sm:gap-1 md:w-max">
             {suggested
               .filter((product) => product.id !== id)
               .map((product) => (
                 <div className="flex-shrink-0" key={product.id}>
                   <ProductCard
                     id={product.id}
-                    className="w-[20rem] h-[27rem]"
+                    className="md:w-[20rem] sm:w-[11.5rem] md:h-[27rem]"
                   />
                 </div>
               ))}

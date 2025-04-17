@@ -4,17 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Form, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { GrSearch } from "react-icons/gr";
 import { z } from "zod";
 
+interface Props {
+  className?: string;
+}
+
 const formSchema = z.object({
   search: z.string().max(100),
 });
 
-const Search = () => {
+const Search = ({ className }: Props) => {
   const [searchBar, setSearchBar] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -31,7 +34,10 @@ const Search = () => {
         <GrSearch className="size-5" onClick={() => setSearchBar(true)} />
       ) : (
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className={`${className}`}
+          >
             <span className="flex items-center gap-2 h-8">
               <FormField
                 control={form.control}

@@ -57,10 +57,10 @@ const RegisterForm = () => {
   });
 
   return (
-    <div>
+    <div className="w-full">
       <Form {...form}>
         <form
-          className="flex flex-col gap-3 w-[25rem]"
+          className="flex flex-col gap-3"
           onSubmit={form.handleSubmit((data) => onSubmit(data, form))}
         >
           <FormField

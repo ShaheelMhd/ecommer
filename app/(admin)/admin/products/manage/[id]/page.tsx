@@ -19,8 +19,10 @@ const ManageProductPage = async ({ params: { id } }: Props) => {
 
   return (
     <div>
-      <div className="flex justify-between align-middle">
-        <h1 className="line-clamp-1">Manage Product: {product?.name}</h1>
+      <div className="flex justify-between align-middle items-center mb-5">
+        <h1 className="line-clamp-1 mb-0 max-sm:text-3xl max-sm:whitespace-nowrap">
+          Manage Product: {product?.name}
+        </h1>
         <DeleteProductButton productId={id} />
       </div>
       <div>

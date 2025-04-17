@@ -24,15 +24,18 @@ const NavBar = async () => {
   });
 
   return (
-    <div className="w-dvw grid grid-cols-2 items-center px-10 py-4 bg-gray-200 text-neutral-900 dark:bg-black dark:text-stone-200">
+    <div
+      className="w-dvw grid grid-cols-2 items-center sm:px-3 md:px-7 px-10 py-4
+    bg-gray-200 text-neutral-900 dark:bg-black dark:text-stone-200 relative"
+    >
       <div className="inline-flex items-center gap-4">
         <Link href="/admin" className="font-semibold text-2xl">
           ECOMMER
         </Link>
-        <p>(ADMIN PANEL)</p>
+        <p className="max-sm:hidden">(ADMIN PANEL)</p>
       </div>
       <div className="justify-self-end flex items-center gap-4">
-        <Search />
+        <Search className="max-sm:absolute max-sm:top-4 max-sm:right-20" />
         <Separator
           orientation="vertical"
           className="h-4 ml-1 opacity-40 dark dark:bg-white"

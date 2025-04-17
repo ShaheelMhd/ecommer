@@ -98,12 +98,12 @@ const CartPage = () => {
       {loading ? (
         <>
           <h1>Your Cart</h1>
-          <div className="grid grid-cols-[2fr_1fr] min-h-full gap-5">
+          <div className="grid lg:grid-cols-[2fr_1fr] max-md:grid-rows-2 min-h-full gap-5">
             <section className="*:mb-5">
               <Skeleton className="p-6 h-[280px] w-full rounded-xl" />
               <Skeleton className="p-6 h-[280px] w-full rounded-xl" />
             </section>
-            <section>
+            <section className="max-md:mt-5">
               <Skeleton className="h-[280px] w-full rounded-xl" />
             </section>
           </div>
@@ -115,7 +115,10 @@ const CartPage = () => {
       ) : (
         <>
           <h1>Your Cart</h1>
-          <div className="grid grid-cols-[2fr_1fr] min-h-full gap-5">
+          <div
+            className="grid lg:grid-cols-[2fr_1fr] sm:grid-rows-2 min-h-full
+          md:gap-5 sm:gap-1"
+          >
             <section>
               {cart.map((cartProduct) => {
                 const product = cartProduct.product;
@@ -124,12 +127,12 @@ const CartPage = () => {
                 return (
                   <Card
                     key={cartProduct.id}
-                    className="col-start-1 mb-5 dark:bg-neutral-900"
+                    className="col-start-1 md:mb-5 sm:mb-1 dark:bg-neutral-900"
                   >
                     <div className="flex h-full w-full">
                       <CardContent
-                        className="pt-6 flex-shrink-0 my-auto aspect-square 
-                      flex items-center justify-center"
+                        className="pt-6 flex-shrink-0 my-auto aspect-square flex
+                        items-center justify-center max-sm:p-2 max-sm:mr-1 max-sm:size-32"
                       >
                         <Image
                           src={productImage.path}
@@ -140,15 +143,21 @@ const CartPage = () => {
                         />
                       </CardContent>
                       <div className="flex flex-col justify-between w-full">
-                        <CardHeader className="pl-0">
+                        <CardHeader className="pl-0 max-sm:pt-4">
                           <Link href={`/products/${product.id}`}>
-                            <CardTitle className="line-clamp-2 dark:text-slate-200">
+                            <CardTitle
+                              className="line-clamp-2 dark:text-slate-200
+                            max-sm:text-lg/5"
+                            >
                               {product.name}
                             </CardTitle>
                           </Link>
                           <h3>${product.price.toLocaleString()}</h3>
                         </CardHeader>
-                        <CardFooter className="grid grid-cols-2 gap-3 pl-0">
+                        <CardFooter
+                          className="grid lg:grid-cols-2 sm:grid-rows-2 md:gap-3 sm:gap-1
+                        pl-0 max-sm:pb-4"
+                        >
                           <QuantitySelector
                             fetchCart={fetchCart}
                             cartProduct={cartProduct}
@@ -165,8 +174,11 @@ const CartPage = () => {
                 );
               })}
             </section>
-            <section>
-              <Card className="dark:bg-neutral-900 flex flex-col max-h-[var(--full-screen-height)] overflow-scroll">
+            <section className="max-md:max-h-fit">
+              <Card
+                className="dark:bg-neutral-900 flex flex-col
+              max-h-[var(--full-screen-height)] overflow-scroll max-sm:mt-10"
+              >
                 <CardHeader>
                   <CardTitle className="dark:text-slate-200">
                     Cart Summary

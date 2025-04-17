@@ -19,7 +19,7 @@ const ProfilePage = async () => {
           alt="User's profile Picture"
           width={100}
           height={100}
-          className="rounded-full"
+          className="rounded-full max-sm:mb-3"
         />
       </div>
       <p>Name: {user?.name}</p>

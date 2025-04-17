@@ -56,19 +56,24 @@ const BrandPage = async ({
   return (
     <>
       <div className="mb-10 flex flex-col items-center relative">
-        <h2>BRAND STORE</h2>
-        <h1 className="text-6xl">{brandName.toUpperCase()}</h1>
-        <ViewToggle className="absolute right-0 top-[9.7rem]" />
+        <h2 className="max-sm:text-lg/5">BRAND STORE</h2>
+        <h1 className="max-sm:text-5xl text-6xl">{brandName.toUpperCase()}</h1>
+        <ViewToggle className="absolute right-0 top-[9.7rem] max-sm:top-[7.6rem]" />
       </div>
 
       {/* to render products by their categories */}
       <div>
         {Object.entries(productCategories).map(([categoryId, products]) => (
           <div key={categoryId} className="mb-10">
-            <h1>{titleCase(products[0].category.name)}</h1>
+            <h1 className="max-sm:text-3xl/5 max-sm:mb-7">
+              {titleCase(products[0].category.name)}
+            </h1>
 
             {(!view || view === "grid") && (
-              <div className="grid grid-cols-4 gap-5">
+              <div
+                className="grid sm:grid-cols-2 md:grid-cols-2
+          lg:grid-cols-3 xl:grid-cols-4 max-sm:gap-1 gap-3"
+              >
                 {products.map((product) => (
                   <ProductCard id={product.id} key={product.id} />
                 ))}
@@ -76,7 +81,7 @@ const BrandPage = async ({
             )}
 
             {view === "list" && (
-              <div className="grid grid-cols-2 gap-5">
+              <div className="grid max-lg:grid-cols-1 grid-cols-2 max-sm:gap-1 gap-3">
                 {products.map((product) => (
                   <LongProductCard id={product.id} key={product.id} />
                 ))}

@@ -32,9 +32,12 @@ const SearchPage = async ({
 
   return (
     <div>
-      <div className="flex justify-between mb-2">
+      <div className="flex max-sm:flex-col justify-between mb-2">
         <h1>Results for "{search}"</h1>
-        <div className="flex items-center gap-2">
+        <div
+          className="flex max-sm:justify-end max-sm:mb-5 max-sm:mr-2
+        items-center gap-2"
+        >
           {products.length > 0 && (
             <>
               <ViewToggle />
@@ -46,13 +49,16 @@ const SearchPage = async ({
       </div>
 
       {(!view || view === "grid") && (
-        <div className="grid grid-cols-4 gap-5">
+        <div
+          className="grid sm:grid-cols-2 md:grid-cols-2
+          lg:grid-cols-3 xl:grid-cols-4 max-sm:gap-1 gap-5"
+        >
           {products.length > 0 ? (
             products.map((product) => (
               <ProductCard
                 id={product.id}
                 key={product.id}
-                className="h-[27rem] mb-3" // w-[20.3rem] if needed
+                className="md:h-[27rem] mb-3"
               />
             ))
           ) : (
@@ -62,7 +68,7 @@ const SearchPage = async ({
       )}
 
       {view === "list" && (
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid max-lg:grid-cols-1 grid-cols-2 max-sm:gap-1 gap-5">
           {products.length > 0 ? (
             products.map((product) => (
               <LongProductCard id={product.id} key={product.id} />

@@ -25,21 +25,27 @@ const NavBar = async () => {
   });
 
   return (
-    <div className="grid grid-cols-3 items-center px-10 py-4 bg-gray-200 text-neutral-900 dark:bg-black dark:text-stone-200">
-      <Link href="/categories">Categories</Link>
+    <div
+      className="md:grid md:grid-cols-3 md:items-center sm:px-3 md:px-7 px-10 py-4
+      max-sm:flex max-sm:justify-between relative
+      bg-gray-200 text-neutral-900 dark:bg-black dark:text-stone-200"
+    >
+      <Link href="/categories" className="max-sm:hidden">
+        Categories
+      </Link>
       <div className="text-center">
         <Link href="/" className="font-semibold text-2xl">
           ECOMMER
         </Link>
       </div>
       <div className="justify-self-end flex items-center gap-4">
-        <Search />
-        <Link href="/cart">
+        <Search className="max-sm:absolute max-sm:top-4 max-sm:right-20" />
+        <Link href="/cart" className="max-sm:hidden">
           <IoBagOutline className="size-5" />
         </Link>
         <Separator
           orientation="vertical"
-          className="h-4 ml-1 opacity-40 dark dark:bg-white"
+          className="h-4 md:ml-1 opacity-40 dark dark:bg-white"
         />
         {session && (
           <DropdownMenu>
@@ -57,6 +63,9 @@ const NavBar = async () => {
               <DropdownMenuItem>
                 <Link href="/orders">Your Orders</Link>
               </DropdownMenuItem>
+              <DropdownMenuItem className="md:hidden">
+                <Link href="/cart">Your Cart</Link>
+              </DropdownMenuItem>
               {user?.role === "admin" && (
                 <DropdownMenuItem>
                   <Link href="/admin">Admin Panel</Link>
@@ -72,7 +81,7 @@ const NavBar = async () => {
             </DropdownMenuContent>
           </DropdownMenu>
         )}
-        {!session && <Link href="api/auth/signin">Login</Link>}
+        {!session && <Link href="/api/auth/signin">Login</Link>}
       </div>
     </div>
   );

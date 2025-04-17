@@ -9,7 +9,7 @@ export default function AuthLayout({ children }: Props) {
   return (
     <>
       <AdminNavBar />
-      <main className="p-10">{children}</main>
+      <main className="sm:px-3 md:px-7 p-10">{children}</main>
     </>
   );
 }

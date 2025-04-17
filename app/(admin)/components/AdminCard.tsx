@@ -10,7 +10,7 @@ interface Props {
 
 const AdminCard = ({ title, href, Icon }: Props) => {
   return (
-    <Card className="text-stone-200">
+    <Card className="text-stone-200 flex flex-col justify-between">
       <CardHeader>
         <CardTitle>
           <Link href={href}>{title}</Link>
