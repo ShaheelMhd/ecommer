@@ -115,7 +115,7 @@ const CartPage = () => {
         <>
           <h1>Your Cart</h1>
           <div
-            className="grid lg:grid-cols-[2fr_1fr] sm:grid-rows-2 min-h-full
+            className="grid lg:grid-cols-[2fr_1fr] max-sm:grid-rows-2 min-h-full
           md:gap-5 sm:gap-1"
           >
             <section>
@@ -154,7 +154,7 @@ const CartPage = () => {
                           <h3>${product.price.toLocaleString()}</h3>
                         </CardHeader>
                         <CardFooter
-                          className="grid lg:grid-cols-2 sm:grid-rows-2 md:gap-3 sm:gap-1
+                          className="grid lg:grid-cols-2 max-sm:grid-rows-2 md:gap-3 sm:gap-1
                         pl-0 max-sm:pb-4"
                         >
                           <QuantitySelector
@@ -176,7 +176,7 @@ const CartPage = () => {
             <section className="max-md:max-h-fit">
               <Card
                 className="dark:bg-neutral-900 flex flex-col
-              max-h-[var(--full-screen-height)] overflow-scroll max-sm:mt-10"
+              max-h-[var(--full-screen-height)] overflow-scroll max-sm:mt-3"
               >
                 <CardHeader>
                   <CardTitle className="dark:text-slate-200">
