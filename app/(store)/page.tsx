@@ -6,7 +6,9 @@ export default async function Home() {
     select: { id: true, name: true },
     orderBy: { name: "desc" },
   });
-  const products = await prisma.product.findMany();
+  const products = await prisma.product.findMany({
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
     <div>

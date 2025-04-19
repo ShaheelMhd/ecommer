@@ -141,7 +141,7 @@ const ProductPage = async ({ params: { id } }: Props) => {
         >
           <div>
             <Link
-              href={`/brands/${product.brand}`}
+              href={`/${product.brand}`}
               className="opacity-80 hover:opacity-100 transition duration-200"
             >
               View {product.brand} Products
